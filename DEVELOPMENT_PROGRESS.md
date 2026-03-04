@@ -1,8 +1,8 @@
 # Lute Club Finder - Development Progress
 
 > **Last Updated**: March 3, 2026  
-> **Current Phase**: Phase 3 — COMPLETE ✅ | Next: Phase 4 (Admin Portal)  
-> **Overall Progress**: ████████████░░░░░░░░ 60%
+> **Current Phase**: Phase 4 — COMPLETE ✅ | Next: Phase 5 (Events System)  
+> **Overall Progress**: ██████████████░░░░░░ 70%
 
 ---
 
@@ -96,10 +96,10 @@
 
 | # | Task | Status | Date | Notes |
 |---|------|--------|------|-------|
-| 4.1 | Admin layout & dashboard | ⬜ | — | |
-| 4.2 | Club management (CRUD) | ⬜ | — | |
-| 4.3 | User management | ⬜ | — | |
-| 4.4 | Admin analytics overview | ⬜ | — | |
+| 4.1 | Admin layout & dashboard | ✅ | Mar 3 | AdminLayout (sidebar + mobile drawer), AdminDashboard (stat cards + quick actions), nested routes under /admin |
+| 4.2 | Club management (CRUD) | ✅ | Mar 3 | AdminClubs list (search/filter/delete), AdminClubEdit form (react-hook-form + zod, field arrays for officers, image upload via Firebase Storage) |
+| 4.3 | User management | ✅ | Mar 3 | AdminUsers with role changes, club leader assignment/removal, expandable rows |
+| 4.4 | Admin analytics overview | ✅ | Mar 3 | AdminAnalytics: stat cards, users by role, top viewed/saved clubs, clubs by category breakdown |
 
 ---
 
@@ -191,6 +191,7 @@
 
 | Date | Change |
 |------|--------|
+| Mar 3, 2026 | **Phase 4 COMPLETE.** Admin Portal: installed react-hook-form + @hookform/resolvers + zod. Built 7 new shared UI components (Select, Textarea, Modal/ConfirmDialog, Table, Toast/ToastProvider, Toggle, ImageUpload). Added ~10 Firebase admin helpers (CRUD clubs, users, image upload/delete, stats) + 8 React Query admin hooks (3 queries, 5 mutations). AdminLayout with dark sidebar + mobile drawer, AdminDashboard with stat cards & quick actions, AdminClubs list page with search/filter/delete, AdminClubEdit form (zod validation, useFieldArray for officers, drag-and-drop image upload), AdminUsers page with role management + club leader assignment, AdminAnalytics with stat cards, role distribution bars, top 10 viewed/saved lists, category breakdown. Header updated with conditional Admin link for admin users. Build passes with zero errors. |
 | Mar 3, 2026 | **Phase 3 COMPLETE.** Quiz Matching Engine: useQuizQuestions React Query hook, quizMatcher.ts (TS port of matching algorithm with 5 weighted dimensions), QuizLanding component (hero + previous results summary), QuizQuestionCard (visual card-style options for single/multi choice), QuizProgress (bar + step dots), QuizResults (ranked top-10 with circular % indicator, match reasons, save/retake actions), full useReducer state machine in QuizPage (landing→quiz→results), slide-in CSS animation between questions, anonymous quiz with sessionStorage persistence + auto-save on login return, ProfilePage quiz CTA updated to show completion state. Build passes with zero errors. |
 | Mar 3, 2026 | **Phase 2 COMPLETE.** Implemented full Club Discovery feature: React Query data hooks (useClubs, useClub, useSearchClubs), ClubCard component with category badges/tags/meeting info/save toggle, DiscoverPage with debounced search, category filter pills, sort options (A-Z, Z-A, Most Saved, Most Viewed), responsive 3-column grid, loading skeletons, and empty state. ClubDetailPage with full club info (description, meeting schedule, officers list, social links, tags, vibes, attributes at-a-glance, related clubs by category, view tracking). Save/bookmark system with useSavedClubs hook for DRY toggle logic. SavedClubsPage showing bookmarked clubs with empty state. Also fixed pre-existing verbatimModuleSyntax type-import errors in Button, Card, Input. Build passes with zero errors. |
 | Mar 3, 2026 | **Bug fixes in Phase 1.** ProfilePage: show loading spinner instead of blank page when `userData` is null (user authenticated but Firestore doc not yet loaded). LoginPage: read `location.state.from` so users redirect back to their intended page (e.g. `/profile`) after login instead of always going to `/`. |
@@ -210,9 +211,9 @@
 ## Quick Stats
 
 - **Total Tasks**: 60
-- **Completed**: 26 (9 pre-dev + 7 Phase 0 + 8 Phase 1 + 6 Phase 2 + 8 Phase 3 — includes bug fixes)
+- **Completed**: 30 (9 pre-dev + 7 Phase 0 + 8 Phase 1 + 6 Phase 2 + 8 Phase 3 + 4 Phase 4 — includes bug fixes)
 - **In Progress**: 0
-- **Remaining**: 34
+- **Remaining**: 30
 
 ---
 

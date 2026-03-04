@@ -18,6 +18,7 @@ import {
   setDoc,
   updateDoc,
   deleteDoc,
+  addDoc,
   query,
   where,
   orderBy,
@@ -27,7 +28,7 @@ import {
   arrayRemove,
   serverTimestamp,
 } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 // Firebase configuration from environment variables
 const firebaseConfig = {
@@ -300,6 +301,140 @@ export async function updateUserData(userId: string, data: Record<string, any>) 
   await updateDoc(doc(db, 'users', userId), data);
 }
 
+// ============================================
+// ADMIN — CLUBS
+// ============================================
+
+/**
+ * Get ALL clubs regardless of status (for admin table)
+ */
+export async function getAllClubs() {
+  const q = query(collection(db, 'clubs'), orderBy('name', 'asc'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+/**
+ * Create a new club
+ */
+export async function createClub(data: Record<string, any>) {
+  const docRef = await addDoc(collection(db, 'clubs'), {
+    ...data,
+    views: 0,
+    saves: 0,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+  return docRef.id;
+}
+
+/**
+ * Delete a club by ID
+ */
+export async function deleteClub(clubId: string) {
+  await deleteDoc(doc(db, 'clubs', clubId));
+}
+
+// ============================================
+// ADMIN — USERS
+// ============================================
+
+/**
+ * Get all users (for admin user table)
+ */
+export async function getAllUsers() {
+  const snapshot = await getDocs(collection(db, 'users'));
+  return snapshot.docs.map((d) => ({ uid: d.id, ...d.data() }));
+}
+
+/**
+ * Update a user's role
+ */
+export async function updateUserRole(userId: string, role: 'student' | 'club_leader' | 'admin') {
+  await updateDoc(doc(db, 'users', userId), { role });
+}
+
+/**
+ * Assign a user as a club leader for a specific club
+ */
+export async function assignClubLeader(userId: string, clubId: string) {
+  await updateDoc(doc(db, 'users', userId), {
+    role: 'club_leader',
+    clubLeaderOf: arrayUnion(clubId),
+  });
+}
+
+/**
+ * Remove a user's leadership from a specific club
+ */
+export async function removeClubLeader(userId: string, clubId: string) {
+  await updateDoc(doc(db, 'users', userId), {
+    clubLeaderOf: arrayRemove(clubId),
+  });
+}
+
+// ============================================
+// ADMIN — IMAGE UPLOAD
+// ============================================
+
+/**
+ * Upload a club image (logo or cover) to Firebase Storage
+ * Returns the download URL
+ */
+export async function uploadClubImage(
+  clubId: string,
+  file: File,
+  imageType: 'logo' | 'cover'
+) {
+  const timestamp = Date.now();
+  const extension = file.name.split('.').pop() || 'jpg';
+  const path = `clubs/${clubId}/${imageType}_${timestamp}.${extension}`;
+  const storageRef = ref(storage, path);
+
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  return url;
+}
+
+/**
+ * Delete a club image from Firebase Storage by URL
+ */
+export async function deleteClubImage(imageUrl: string) {
+  try {
+    const storageRef = ref(storage, imageUrl);
+    await deleteObject(storageRef);
+  } catch {
+    // Image may already be deleted or URL invalid — non-critical
+  }
+}
+
+// ============================================
+// ADMIN — STATS
+// ============================================
+
+/**
+ * Get aggregate admin stats
+ */
+export async function getAdminStats() {
+  const [clubsSnap, usersSnap, eventsSnap] = await Promise.all([
+    getDocs(collection(db, 'clubs')),
+    getDocs(collection(db, 'users')),
+    getDocs(query(collection(db, 'events'), where('status', '==', 'upcoming'))),
+  ]);
+
+  let quizCompletions = 0;
+  usersSnap.docs.forEach((d) => {
+    if (d.data().quizCompleted) quizCompletions++;
+  });
+
+  return {
+    totalClubs: clubsSnap.size,
+    totalUsers: usersSnap.size,
+    activeEvents: eventsSnap.size,
+    quizCompletions,
+  };
+}
+
 // Re-export Firestore utilities for use in hooks
 export {
   collection,
@@ -309,6 +444,7 @@ export {
   setDoc,
   updateDoc,
   deleteDoc,
+  addDoc,
   query,
   where,
   orderBy,

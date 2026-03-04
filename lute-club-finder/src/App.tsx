@@ -2,7 +2,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { RootLayout } from './components/layout';
-import { ProtectedRoute, AdminRoute } from './components/auth';
+import { ProtectedRoute } from './components/auth';
+import { ToastProvider } from './components/ui';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -14,8 +15,15 @@ import AnnouncementsPage from './pages/AnnouncementsPage';
 import ProfilePage from './pages/ProfilePage';
 import SavedClubsPage from './pages/SavedClubsPage';
 import LoginPage from './pages/LoginPage';
-import AdminDashboard from './pages/admin/AdminDashboard';
 import NotFoundPage from './pages/NotFoundPage';
+
+// Admin Pages
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminClubs from './pages/admin/AdminClubs';
+import AdminClubEdit from './pages/admin/AdminClubEdit';
+import AdminUsers from './pages/admin/AdminUsers';
+import AdminAnalytics from './pages/admin/AdminAnalytics';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,11 +64,15 @@ const router = createBrowserRouter([
       { path: 'login', element: <LoginPage /> },
       {
         path: 'admin',
-        element: (
-          <AdminRoute>
-            <AdminDashboard />
-          </AdminRoute>
-        ),
+        element: <AdminLayout />,
+        children: [
+          { index: true, element: <AdminDashboard /> },
+          { path: 'clubs', element: <AdminClubs /> },
+          { path: 'clubs/new', element: <AdminClubEdit /> },
+          { path: 'clubs/:id/edit', element: <AdminClubEdit /> },
+          { path: 'users', element: <AdminUsers /> },
+          { path: 'analytics', element: <AdminAnalytics /> },
+        ],
       },
       { path: '*', element: <NotFoundPage /> },
     ],
@@ -71,7 +83,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <ToastProvider>
+          <RouterProvider router={router} />
+        </ToastProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
