@@ -23,6 +23,8 @@ import {
   orderBy,
   limit,
   increment,
+  arrayUnion,
+  arrayRemove,
   serverTimestamp,
 } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
@@ -198,25 +200,31 @@ export async function incrementClubViews(clubId: string) {
 // ============================================
 
 export async function saveClub(userId: string, clubId: string) {
-  const userRef = doc(db, 'users', userId);
-  const userDoc = await getDoc(userRef);
-  const savedClubs: string[] = userDoc.data()?.savedClubs || [];
+  // Atomically add to user's savedClubs array
+  await updateDoc(doc(db, 'users', userId), {
+    savedClubs: arrayUnion(clubId),
+  });
 
-  if (!savedClubs.includes(clubId)) {
-    await updateDoc(userRef, { savedClubs: [...savedClubs, clubId] });
+  // Best-effort increment on club doc (may fail if user lacks write permission)
+  try {
     await updateDoc(doc(db, 'clubs', clubId), { saves: increment(1) });
+  } catch {
+    // Non-critical — counter is cosmetic
   }
 }
 
 export async function unsaveClub(userId: string, clubId: string) {
-  const userRef = doc(db, 'users', userId);
-  const userDoc = await getDoc(userRef);
-  const savedClubs: string[] = userDoc.data()?.savedClubs || [];
-
-  await updateDoc(userRef, {
-    savedClubs: savedClubs.filter((id) => id !== clubId),
+  // Atomically remove from user's savedClubs array
+  await updateDoc(doc(db, 'users', userId), {
+    savedClubs: arrayRemove(clubId),
   });
-  await updateDoc(doc(db, 'clubs', clubId), { saves: increment(-1) });
+
+  // Best-effort decrement on club doc
+  try {
+    await updateDoc(doc(db, 'clubs', clubId), { saves: increment(-1) });
+  } catch {
+    // Non-critical — counter is cosmetic
+  }
 }
 
 // ============================================
@@ -306,6 +314,8 @@ export {
   orderBy,
   limit,
   increment,
+  arrayUnion,
+  arrayRemove,
   serverTimestamp,
 };
 
