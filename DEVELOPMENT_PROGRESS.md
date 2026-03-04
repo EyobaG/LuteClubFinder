@@ -1,8 +1,8 @@
 # Lute Club Finder - Development Progress
 
 > **Last Updated**: March 3, 2026  
-> **Current Phase**: Phase 1 — COMPLETE ✅ | Next: Phase 2 (Club Discovery)  
-> **Overall Progress**: ████████░░░░░░░░░░░░ 35%
+> **Current Phase**: Phase 2 — COMPLETE ✅ | Next: Phase 3 (Quiz Matching Engine)  
+> **Overall Progress**: ██████████░░░░░░░░░░ 50%
 
 ---
 
@@ -68,12 +68,12 @@
 
 | # | Task | Status | Date | Notes |
 |---|------|--------|------|-------|
-| 2.1 | Club data hooks (useClubs, useClub, useSearchClubs) | ⬜ | — | |
-| 2.2 | Club card component | ⬜ | — | |
-| 2.3 | Discover page (search, filters, grid) | ⬜ | — | |
-| 2.4 | Club detail page | ⬜ | — | |
-| 2.5 | Save/bookmark functionality | ⬜ | — | |
-| 2.6 | Saved clubs page | ⬜ | — | |
+| 2.1 | Club data hooks (useClubs, useClub, useSearchClubs) | ✅ | Mar 3 | React Query hooks in src/hooks/useClubs.ts |
+| 2.2 | Club card component | ✅ | Mar 3 | ClubCard with category badge, tags, meeting info, save button |
+| 2.3 | Discover page (search, filters, grid) | ✅ | Mar 3 | Debounced search, category pills, sort (A-Z, saves, views), responsive grid, loading skeletons, empty state |
+| 2.4 | Club detail page | ✅ | Mar 3 | Full detail: description, meeting schedule, officers, social links, tags, vibes, attributes, related clubs, view tracking |
+| 2.5 | Save/bookmark functionality | ✅ | Mar 3 | saveClub/unsaveClub with toggle on cards + detail page, useSavedClubs hook |
+| 2.6 | Saved clubs page | ✅ | Mar 3 | Grid of saved clubs with unsave, empty state with CTA to discover |
 
 ---
 
@@ -189,6 +189,7 @@
 
 | Date | Change |
 |------|--------|
+| Mar 3, 2026 | **Phase 2 COMPLETE.** Implemented full Club Discovery feature: React Query data hooks (useClubs, useClub, useSearchClubs), ClubCard component with category badges/tags/meeting info/save toggle, DiscoverPage with debounced search, category filter pills, sort options (A-Z, Z-A, Most Saved, Most Viewed), responsive 3-column grid, loading skeletons, and empty state. ClubDetailPage with full club info (description, meeting schedule, officers list, social links, tags, vibes, attributes at-a-glance, related clubs by category, view tracking). Save/bookmark system with useSavedClubs hook for DRY toggle logic. SavedClubsPage showing bookmarked clubs with empty state. Also fixed pre-existing verbatimModuleSyntax type-import errors in Button, Card, Input. Build passes with zero errors. |
 | Mar 3, 2026 | **Bug fixes in Phase 1.** ProfilePage: show loading spinner instead of blank page when `userData` is null (user authenticated but Firestore doc not yet loaded). LoginPage: read `location.state.from` so users redirect back to their intended page (e.g. `/profile`) after login instead of always going to `/`. |
 | Mar 3, 2026 | **Phase 0 COMPLETE.** Created Vite+React+TS app, installed deps (firebase, react-router, react-query, tailwind), configured Tailwind via Vite plugin, built Firebase helper lib with all CRUD functions, set up 11-route SPA with RootLayout, built 8 shared UI components (Button, Card, Input, Badge, LoadingSpinner, Header, Footer, RootLayout), defined all TypeScript interfaces. Build passes with zero errors. |
 | Mar 3, 2026 | Project initialized. Database setup and data migration complete. Implementation guide and progress tracker created. |
