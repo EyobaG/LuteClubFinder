@@ -170,6 +170,21 @@ export default function ProfilePage() {
         </div>
       )}
 
+      {userData.quizCompleted && (
+        <div className="bg-green-50 border border-green-200 rounded-xl p-6 mb-6">
+          <h3 className="font-semibold text-green-800 mb-1">
+            Quiz Completed!
+          </h3>
+          <p className="text-green-700 text-sm mb-3">
+            You've found your top club matches. View your results or retake the
+            quiz at any time.
+          </p>
+          <Button size="sm" onClick={() => navigate('/quiz')}>
+            View Results / Retake
+          </Button>
+        </div>
+      )}
+
       {/* Sign Out */}
       <Button
         variant="outline"

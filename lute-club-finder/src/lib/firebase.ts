@@ -224,13 +224,14 @@ export async function unsaveClub(userId: string, clubId: string) {
 // ============================================
 
 export async function getQuizQuestions() {
-  const q = query(
-    collection(db, 'quizQuestions'),
-    where('active', '==', true),
-    orderBy('order', 'asc')
-  );
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+  // Fetch all quiz questions and filter/sort client-side.
+  // This avoids needing a Firestore composite index (active + order)
+  // and there are only ~5 questions so the overhead is negligible.
+  const snapshot = await getDocs(collection(db, 'quizQuestions'));
+  return snapshot.docs
+    .map((d) => ({ id: d.id, ...d.data() }))
+    .filter((q: any) => q.active !== false)
+    .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
 }
 
 export async function submitQuizResults(

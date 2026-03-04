@@ -1,8 +1,8 @@
 # Lute Club Finder - Development Progress
 
 > **Last Updated**: March 3, 2026  
-> **Current Phase**: Phase 2 — COMPLETE ✅ | Next: Phase 3 (Quiz Matching Engine)  
-> **Overall Progress**: ██████████░░░░░░░░░░ 50%
+> **Current Phase**: Phase 3 — COMPLETE ✅ | Next: Phase 4 (Admin Portal)  
+> **Overall Progress**: ████████████░░░░░░░░ 60%
 
 ---
 
@@ -81,12 +81,14 @@
 
 | # | Task | Status | Date | Notes |
 |---|------|--------|------|-------|
-| 3.1 | Quiz data hook (useQuizQuestions) | ⬜ | — | |
-| 3.2 | Quiz landing page | ⬜ | — | |
-| 3.3 | Quiz question components | ⬜ | — | single_choice, multiple_choice |
-| 3.4 | Quiz navigation & state management | ⬜ | — | |
-| 3.5 | Matching algorithm (TypeScript port) | ⬜ | — | |
-| 3.6 | Quiz results page | ⬜ | — | |
+| 3.1 | Quiz data hook (useQuizQuestions) | ✅ | Mar 3 | React Query hook in src/hooks/useQuiz.ts, 30-min stale time |
+| 3.2 | Quiz landing page | ✅ | Mar 3 | QuizLanding component with hero, previous results summary, retake CTA |
+| 3.3 | Quiz question components | ✅ | Mar 3 | QuizQuestionCard: visual card-style options for single_choice & multiple_choice |
+| 3.4 | Quiz navigation & state management | ✅ | Mar 3 | useReducer state machine (landing→quiz→results), QuizProgress bar + step dots, slide animations |
+| 3.5 | Matching algorithm (TypeScript port) | ✅ | Mar 3 | src/lib/quizMatcher.ts — 5-dimension weighted scoring (35% interests, 25% time, 20% vibes, 10% exp, 10% meeting) |
+| 3.6 | Quiz results page | ✅ | Mar 3 | QuizResults: ranked top-10 cards with circular % indicator, match reasons, save/retake/browse actions |
+| 3.7 | Anonymous quiz + login-to-save flow | ✅ | Mar 3 | sessionStorage persistence for pending results, auto-save on login return |
+| 3.8 | Profile page quiz CTA update | ✅ | Mar 3 | Shows "Quiz Completed" card with View Results/Retake link when quiz is done |
 
 ---
 
@@ -189,6 +191,7 @@
 
 | Date | Change |
 |------|--------|
+| Mar 3, 2026 | **Phase 3 COMPLETE.** Quiz Matching Engine: useQuizQuestions React Query hook, quizMatcher.ts (TS port of matching algorithm with 5 weighted dimensions), QuizLanding component (hero + previous results summary), QuizQuestionCard (visual card-style options for single/multi choice), QuizProgress (bar + step dots), QuizResults (ranked top-10 with circular % indicator, match reasons, save/retake actions), full useReducer state machine in QuizPage (landing→quiz→results), slide-in CSS animation between questions, anonymous quiz with sessionStorage persistence + auto-save on login return, ProfilePage quiz CTA updated to show completion state. Build passes with zero errors. |
 | Mar 3, 2026 | **Phase 2 COMPLETE.** Implemented full Club Discovery feature: React Query data hooks (useClubs, useClub, useSearchClubs), ClubCard component with category badges/tags/meeting info/save toggle, DiscoverPage with debounced search, category filter pills, sort options (A-Z, Z-A, Most Saved, Most Viewed), responsive 3-column grid, loading skeletons, and empty state. ClubDetailPage with full club info (description, meeting schedule, officers list, social links, tags, vibes, attributes at-a-glance, related clubs by category, view tracking). Save/bookmark system with useSavedClubs hook for DRY toggle logic. SavedClubsPage showing bookmarked clubs with empty state. Also fixed pre-existing verbatimModuleSyntax type-import errors in Button, Card, Input. Build passes with zero errors. |
 | Mar 3, 2026 | **Bug fixes in Phase 1.** ProfilePage: show loading spinner instead of blank page when `userData` is null (user authenticated but Firestore doc not yet loaded). LoginPage: read `location.state.from` so users redirect back to their intended page (e.g. `/profile`) after login instead of always going to `/`. |
 | Mar 3, 2026 | **Phase 0 COMPLETE.** Created Vite+React+TS app, installed deps (firebase, react-router, react-query, tailwind), configured Tailwind via Vite plugin, built Firebase helper lib with all CRUD functions, set up 11-route SPA with RootLayout, built 8 shared UI components (Button, Card, Input, Badge, LoadingSpinner, Header, Footer, RootLayout), defined all TypeScript interfaces. Build passes with zero errors. |
@@ -206,10 +209,10 @@
 
 ## Quick Stats
 
-- **Total Tasks**: 58
-- **Completed**: 18 (9 pre-dev + 7 Phase 0 + 2 Phase 1 bug fixes)
+- **Total Tasks**: 60
+- **Completed**: 26 (9 pre-dev + 7 Phase 0 + 8 Phase 1 + 6 Phase 2 + 8 Phase 3 — includes bug fixes)
 - **In Progress**: 0
-- **Remaining**: 40
+- **Remaining**: 34
 
 ---
 
