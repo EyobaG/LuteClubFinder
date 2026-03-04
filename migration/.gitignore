@@ -1,0 +1,15 @@
+# Firebase credentials - NEVER commit these!
+serviceAccountKey.json
+*-firebase-adminsdk-*.json
+
+# Generated files
+clubs-transformed.json
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*

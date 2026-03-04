@@ -1,0 +1,15 @@
+{
+  "name": "lute-club-finder-migration",
+  "version": "1.0.0",
+  "description": "Data migration scripts for PLU Club Finder",
+  "scripts": {
+    "analyze": "node data-analysis.js",
+    "transform": "node clean-and-transform.js",
+    "import": "node firestore-import.js",
+    "migrate": "npm run transform && npm run import"
+  },
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "firebase-admin": "^12.0.0"
+  }
+}
