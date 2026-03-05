@@ -144,26 +144,25 @@ export async function getClubs(filters?: {
   featured?: boolean;
   limitCount?: number;
 }) {
-  const constraints: Parameters<typeof query>[1][] = [];
+  // Fetch all clubs and filter client-side to avoid composite index requirements
+  const snapshot = await getDocs(collection(db, 'clubs'));
+  let clubs = snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as any));
+
+  // Default to active if no status specified
+  const status = filters?.status ?? 'active';
+  clubs = clubs.filter((c: any) => c.status === status);
 
   if (filters?.category) {
-    constraints.push(where('category', '==', filters.category));
-  }
-  if (filters?.status) {
-    constraints.push(where('status', '==', filters.status));
-  } else {
-    constraints.push(where('status', '==', 'active'));
+    clubs = clubs.filter((c: any) => c.category === filters.category);
   }
   if (filters?.featured) {
-    constraints.push(where('featured', '==', true));
+    clubs = clubs.filter((c: any) => c.featured === true);
   }
   if (filters?.limitCount) {
-    constraints.push(limit(filters.limitCount));
+    clubs = clubs.slice(0, filters.limitCount);
   }
 
-  const q = query(collection(db, 'clubs'), ...constraints);
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+  return clubs;
 }
 
 export async function getClub(clubId: string) {
@@ -263,16 +262,23 @@ export async function submitQuizResults(
 // ============================================
 
 export async function getUpcomingEvents(clubId?: string, limitCount?: number) {
-  const constraints: any[] = [
-    where('status', '==', 'upcoming'),
-    orderBy('startTime', 'asc'),
-  ];
-  if (clubId) constraints.unshift(where('clubId', '==', clubId));
-  if (limitCount) constraints.push(limit(limitCount));
+  // Use a single equality filter to avoid composite index requirements.
+  // Sort and limit client-side since upcoming event sets are small.
+  const constraints: any[] = [where('status', '==', 'upcoming')];
+  if (clubId) constraints.push(where('clubId', '==', clubId));
 
   const q = query(collection(db, 'events'), ...constraints);
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+  const events = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+  // Sort by startTime ascending
+  events.sort((a: any, b: any) => {
+    const aTime = a.startTime?.toDate?.() ?? new Date(a.startTime);
+    const bTime = b.startTime?.toDate?.() ?? new Date(b.startTime);
+    return aTime.getTime() - bTime.getTime();
+  });
+
+  return limitCount ? events.slice(0, limitCount) : events;
 }
 
 export async function getEvents(filters?: {
@@ -280,27 +286,41 @@ export async function getEvents(filters?: {
   eventType?: string;
   status?: string;
 }) {
-  const constraints: any[] = [orderBy('startTime', 'desc')];
+  // Fetch all events then filter/sort client-side to avoid composite index requirements
+  const snapshot = await getDocs(collection(db, 'events'));
+  let events = snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as any));
 
   if (filters?.clubId) {
-    constraints.unshift(where('clubId', '==', filters.clubId));
+    events = events.filter((e: any) => e.clubId === filters.clubId);
   }
   if (filters?.eventType) {
-    constraints.unshift(where('eventType', '==', filters.eventType));
+    events = events.filter((e: any) => e.eventType === filters.eventType);
   }
   if (filters?.status) {
-    constraints.unshift(where('status', '==', filters.status));
+    events = events.filter((e: any) => e.status === filters.status);
   }
 
-  const q = query(collection(db, 'events'), ...constraints);
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+  // Sort by startTime descending
+  events.sort((a: any, b: any) => {
+    const aTime = a.startTime?.toDate?.() ?? new Date(a.startTime);
+    const bTime = b.startTime?.toDate?.() ?? new Date(b.startTime);
+    return bTime.getTime() - aTime.getTime();
+  });
+
+  return events;
 }
 
 export async function getAllEvents() {
-  const q = query(collection(db, 'events'), orderBy('startTime', 'desc'));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+  const snapshot = await getDocs(collection(db, 'events'));
+  const events = snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as any));
+
+  events.sort((a: any, b: any) => {
+    const aTime = a.startTime?.toDate?.() ?? new Date(a.startTime);
+    const bTime = b.startTime?.toDate?.() ?? new Date(b.startTime);
+    return bTime.getTime() - aTime.getTime();
+  });
+
+  return events;
 }
 
 export async function getEvent(eventId: string) {
