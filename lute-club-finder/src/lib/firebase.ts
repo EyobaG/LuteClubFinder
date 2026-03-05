@@ -386,13 +386,83 @@ export async function uploadEventImage(eventId: string, file: File) {
 // ANNOUNCEMENTS
 // ============================================
 
-export async function getAnnouncements(clubId?: string) {
-  const constraints: any[] = [orderBy('publishedAt', 'desc'), limit(20)];
-  if (clubId) constraints.unshift(where('clubId', '==', clubId));
+export async function getAnnouncements(filters?: { clubId?: string; type?: string; limitCount?: number }) {
+  // Fetch all announcements and filter/sort client-side to avoid composite index requirements
+  const snapshot = await getDocs(collection(db, 'announcements'));
+  let announcements = snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as any));
 
-  const q = query(collection(db, 'announcements'), ...constraints);
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+  if (filters?.clubId) {
+    announcements = announcements.filter((a: any) => a.clubId === filters.clubId);
+  }
+  if (filters?.type) {
+    announcements = announcements.filter((a: any) => a.type === filters.type);
+  }
+
+  // Sort by pinned first, then by publishedAt descending
+  announcements.sort((a: any, b: any) => {
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    const aTime = a.publishedAt?.toDate?.() ?? new Date(a.publishedAt ?? 0);
+    const bTime = b.publishedAt?.toDate?.() ?? new Date(b.publishedAt ?? 0);
+    return bTime.getTime() - aTime.getTime();
+  });
+
+  if (filters?.limitCount) {
+    announcements = announcements.slice(0, filters.limitCount);
+  }
+
+  return announcements;
+}
+
+export async function getAllAnnouncements() {
+  const snapshot = await getDocs(collection(db, 'announcements'));
+  const announcements = snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as any));
+
+  announcements.sort((a: any, b: any) => {
+    const aTime = a.publishedAt?.toDate?.() ?? new Date(a.publishedAt ?? 0);
+    const bTime = b.publishedAt?.toDate?.() ?? new Date(b.publishedAt ?? 0);
+    return bTime.getTime() - aTime.getTime();
+  });
+
+  return announcements;
+}
+
+export async function getAnnouncement(announcementId: string) {
+  const announcementDoc = await getDoc(doc(db, 'announcements', announcementId));
+  if (!announcementDoc.exists()) throw new Error('Announcement not found');
+  return { id: announcementDoc.id, ...announcementDoc.data() };
+}
+
+export async function createAnnouncement(data: Record<string, any>) {
+  const docRef = await addDoc(collection(db, 'announcements'), {
+    ...data,
+    views: 0,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+  return docRef.id;
+}
+
+export async function updateAnnouncement(announcementId: string, data: Record<string, any>) {
+  await updateDoc(doc(db, 'announcements', announcementId), {
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function deleteAnnouncement(announcementId: string) {
+  await deleteDoc(doc(db, 'announcements', announcementId));
+}
+
+export async function uploadAnnouncementImage(announcementId: string, file: File) {
+  const timestamp = Date.now();
+  const extension = file.name.split('.').pop() || 'jpg';
+  const path = `announcements/${announcementId}/${timestamp}.${extension}`;
+  const storageRef = ref(storage, path);
+
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  return url;
 }
 
 // ============================================

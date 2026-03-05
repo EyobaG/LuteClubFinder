@@ -7,6 +7,7 @@
     "transform": "node clean-and-transform.js",
     "import": "node firestore-import.js",
     "seed-events": "node seed-events.js",
+    "seed-announcements": "node seed-announcements.js",
     "migrate": "npm run transform && npm run import"
   },
   "dependencies": {

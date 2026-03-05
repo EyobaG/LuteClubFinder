@@ -150,7 +150,7 @@ export interface Announcement {
   id: string;
   title: string;
   content: string;
-  type: 'club' | 'platform';
+  type: 'club' | 'platform' | 'news' | 'plu-spotlight';
   clubId: string | null;
   clubName: string | null;
   audience: 'all' | 'members' | 'leaders';

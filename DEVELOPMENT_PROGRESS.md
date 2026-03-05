@@ -1,8 +1,8 @@
 # Lute Club Finder - Development Progress
 
 > **Last Updated**: March 4, 2026  
-> **Current Phase**: Phase 5 — COMPLETE ✅ | Next: Phase 6 (Announcements System)  
-> **Overall Progress**: ████████████████░░░░ 80%
+> **Current Phase**: Phase 6 — COMPLETE ✅ | Next: Phase 7 (Club Leader Portal)  
+> **Overall Progress**: █████████████████░░░ 85%
 
 ---
 
@@ -120,9 +120,9 @@
 
 | # | Task | Status | Date | Notes |
 |---|------|--------|------|-------|
-| 6.1 | Announcement data hooks | ⬜ | — | |
-| 6.2 | Announcements feed page | ⬜ | — | |
-| 6.3 | Announcement creation form | ⬜ | — | |
+| 6.1 | Announcement data hooks | ✅ | Mar 4 | Firebase helpers (getAnnouncements with filters, getAllAnnouncements, getAnnouncement, createAnnouncement, updateAnnouncement, deleteAnnouncement, uploadAnnouncementImage) + React Query hooks (useAnnouncements, useAllAnnouncements, useAnnouncement, useCreateAnnouncement, useUpdateAnnouncement, useDeleteAnnouncement) |
+| 6.2 | Announcements feed page | ✅ | Mar 4 | AnnouncementsPage: debounced search, type filter pills (All/Club/Platform), priority dropdown, sort (Newest/Oldest), pinned announcements section at top, responsive grid, loading spinner, empty state with clear filters |
+| 6.3 | Announcement creation form | ✅ | Mar 4 | AnnouncementForm (zod + react-hook-form): title/content validation, type (platform/club) with conditional club dropdown, audience/priority selects, pinned toggle, optional expiration date, image upload. AnnouncementCard component with inline expand, priority/type badges, pin indicator, view count. Admin pages (AdminAnnouncements list with search/filter/delete, AdminAnnouncementEdit create/edit). Admin sidebar link + 3 routes + dashboard quick action. HomePage "Latest Announcements" section (3 items). Build passes with zero errors. |
 
 ---
 
@@ -193,6 +193,9 @@
 
 | Date | Change |
 |------|--------|
+| Mar 4, 2026 | **Seeded 19 sample announcements** (4 platform, 6 club, 4 news, 5 PLU spotlight; 5 pinned) via `migration/seed-announcements.js`. Also added two new announcement types — **News** and **PLU Spotlight** — alongside the existing Platform and Club types. Updated Announcement type definition, AnnouncementCard badge colors (news=emerald, spotlight=purple), AnnouncementForm zod schema & dropdown, AnnouncementsPage filter pills, and AdminAnnouncements filter/table badge rendering. |
+| Mar 4, 2026 | **Phase 6 COMPLETE.** Announcements System: added 7 Firebase announcement helpers (getAnnouncements with client-side filter/sort to avoid composite index issues, getAllAnnouncements, getAnnouncement, createAnnouncement, updateAnnouncement, deleteAnnouncement, uploadAnnouncementImage) + 6 React Query hooks. Built AnnouncementCard component (inline expand, priority/type badges, pin indicator, author, date, view count). AnnouncementForm (zod validation, type/club/audience/priority fields, pinned toggle, expiration date, image upload). AnnouncementsPage feed with debounced search, type filter pills, priority dropdown, sort, pinned section. AdminAnnouncements list with search/filter/delete + AdminAnnouncementEdit create/edit page. Added Announcements link to admin sidebar, 3 admin routes, "Post Announcement" quick action on dashboard. HomePage "Latest Announcements" section (3 items between Featured Clubs and Upcoming Events). Build passes with zero errors. |
+| Mar 4, 2026 | **Bug fix: Firestore composite index errors.** `getClubs`, `getUpcomingEvents`, `getEvents`, and `getAllEvents` all used compound queries (`where` + `orderBy` or multiple `where` clauses) that require Firestore composite indexes. Without the indexes the client SDK silently fails, causing empty sections on the homepage (Featured Clubs + Upcoming Events) and events page. Fix: refactored all four functions to fetch documents with simple queries and filter/sort client-side. Also seeded 17 test events and marked 6 clubs as featured across different categories. |
 | Mar 4, 2026 | **Phase 5 bug fix: "I'm Interested" count not updating.** The toggle called `toggleEventInterest` directly without invalidating React Query caches, so the `interestedCount` stayed stale on both the event detail page and admin portal. Fix: created `useToggleEventInterest` mutation hook that invalidates `['event', eventId]`, `['events']`, and `['admin', 'events']` query keys on success. Updated EventDetailPage to use the hook. Also added `interestedEvents: string[]` to the `UserData` type (removed `as any` casts). |
 | Mar 3, 2026 | **Phase 5 COMPLETE.** Events System: added 8 Firebase event helpers (getEvents with filters, getUpcomingEvents, getEvent, createEvent, updateEvent, deleteEvent, toggleEventInterest, uploadEventImage) + 7 React Query hooks. Built EventCard component (type badge, virtual badge, date/time, interested count), EventForm (zod validation with refinements for endTime > startTime and virtual link required, react-hook-form, datetime-local inputs, Toggle integration via setValue, image upload). EventsPage with debounced search, event type filter pills, club dropdown, date filter (upcoming/past/all), sort, skeletons, empty state. EventDetailPage with full info sections, registration, interested toggle. AdminEvents list with search/filter/delete + AdminEventEdit create/edit page. Added 4 routes (events/:id, admin/events, admin/events/new, admin/events/:id/edit) + Events sidebar link. Integrated upcoming events on ClubDetailPage and HomePage with real data (featured clubs + events). Build passes with zero errors. |
 | Mar 3, 2026 | **Phase 4 bug fixes.** Added required field `*` indicators on AdminClubEdit form (name, shortDescription, description, category). Fixed Firestore `updateDoc()` crash caused by `undefined` values in socialLinks — empty social link fields are now omitted from the document instead of set to undefined. |

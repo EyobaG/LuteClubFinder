@@ -2,12 +2,15 @@ import { Link } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import { useUpcomingEvents } from '../hooks/useEvents';
 import { useClubs } from '../hooks/useClubs';
+import { useAnnouncements } from '../hooks/useAnnouncements';
 import { EventCard } from '../components/events';
 import { ClubCard } from '../components/clubs';
+import { AnnouncementCard } from '../components/announcements';
 
 export default function HomePage() {
   const { data: upcomingEvents } = useUpcomingEvents(undefined, 6);
   const { data: clubs } = useClubs({ featured: true, limitCount: 4 });
+  const { data: announcements } = useAnnouncements({ limitCount: 3 });
 
   return (
     <div>
@@ -72,6 +75,23 @@ export default function HomePage() {
           <p className="text-gray-500">No featured clubs yet.</p>
         )}
       </section>
+
+      {/* Latest Announcements */}
+      {announcements && announcements.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Latest Announcements</h2>
+            <Link to="/announcements" className="text-sm text-amber-600 hover:text-amber-700 font-medium">
+              View All →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {announcements.map((a) => (
+              <AnnouncementCard key={a.id} announcement={a} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Upcoming Events */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">

@@ -32,6 +32,15 @@ const sidebarLinks = [
     ),
   },
   {
+    to: '/admin/announcements',
+    label: 'Announcements',
+    icon: (
+      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38a.75.75 0 01-1.006-.275 11.865 11.865 0 01-1.6-4.267m5.651 0A12.04 12.04 0 0021 12a12.04 12.04 0 00-3.01-3.84m0 7.68a11.855 11.855 0 002.53-3.84 11.855 11.855 0 00-2.53-3.84m0 0L13.5 4.56a2.083 2.083 0 00-3.16.09L10.34 5.66" />
+      </svg>
+    ),
+  },
+  {
     to: '/admin/users',
     label: 'Users',
     icon: (

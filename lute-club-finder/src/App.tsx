@@ -26,6 +26,8 @@ import AdminClubs from './pages/admin/AdminClubs';
 import AdminClubEdit from './pages/admin/AdminClubEdit';
 import AdminEvents from './pages/admin/AdminEvents';
 import AdminEventEdit from './pages/admin/AdminEventEdit';
+import AdminAnnouncements from './pages/admin/AdminAnnouncements';
+import AdminAnnouncementEdit from './pages/admin/AdminAnnouncementEdit';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminAnalytics from './pages/admin/AdminAnalytics';
 
@@ -78,6 +80,9 @@ const router = createBrowserRouter([
           { path: 'events', element: <AdminEvents /> },
           { path: 'events/new', element: <AdminEventEdit /> },
           { path: 'events/:id/edit', element: <AdminEventEdit /> },
+          { path: 'announcements', element: <AdminAnnouncements /> },
+          { path: 'announcements/new', element: <AdminAnnouncementEdit /> },
+          { path: 'announcements/:id/edit', element: <AdminAnnouncementEdit /> },
           { path: 'users', element: <AdminUsers /> },
           { path: 'analytics', element: <AdminAnalytics /> },
         ],
