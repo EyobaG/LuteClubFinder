@@ -18,6 +18,7 @@ import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 import EventDetailPage from './pages/EventDetailPage';
+import AnnouncementDetailPage from './pages/AnnouncementDetailPage';
 
 // Admin Pages
 import AdminLayout from './pages/admin/AdminLayout';
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
       { path: 'events', element: <EventsPage /> },
       { path: 'events/:id', element: <EventDetailPage /> },
       { path: 'announcements', element: <AnnouncementsPage /> },
+      { path: 'announcements/:id', element: <AnnouncementDetailPage /> },
       {
         path: 'profile',
         element: (

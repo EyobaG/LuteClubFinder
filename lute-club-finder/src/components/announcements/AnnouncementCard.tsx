@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
 import type { Announcement } from '../../types';
@@ -32,7 +32,6 @@ interface AnnouncementCardProps {
 }
 
 export default function AnnouncementCard({ announcement }: AnnouncementCardProps) {
-  const [expanded, setExpanded] = useState(false);
   const priorityStyle = PRIORITY_STYLES[announcement.priority] ?? PRIORITY_STYLES.normal;
   const typeStyle = TYPE_STYLES[announcement.type] ?? TYPE_STYLES.platform;
 
@@ -41,7 +40,8 @@ export default function AnnouncementCard({ announcement }: AnnouncementCardProps
     : announcement.content;
 
   return (
-    <Card className="flex flex-col h-full">
+    <Link to={`/announcements/${announcement.id}`} className="block h-full">
+    <Card className="flex flex-col h-full hover:shadow-md transition-shadow">
       <div className="p-5 flex flex-col flex-1">
         {/* Badges row */}
         <div className="flex items-center gap-2 mb-3 flex-wrap">
@@ -72,18 +72,10 @@ export default function AnnouncementCard({ announcement }: AnnouncementCardProps
           <span className="text-gray-400 font-normal"> · {announcement.authorName}</span>
         </p>
 
-        {/* Content */}
-        <p className="text-sm text-gray-600 mb-3 whitespace-pre-line">
-          {expanded ? announcement.content : contentPreview}
+        {/* Content preview */}
+        <p className="text-sm text-gray-600 mb-3 line-clamp-3">
+          {contentPreview}
         </p>
-        {announcement.content.length > 150 && (
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="text-sm text-amber-600 hover:text-amber-700 font-medium mb-3 self-start"
-          >
-            {expanded ? 'Show less' : 'Read more'}
-          </button>
-        )}
 
         {/* Image */}
         {announcement.imageUrl && (
@@ -114,5 +106,6 @@ export default function AnnouncementCard({ announcement }: AnnouncementCardProps
         </div>
       </div>
     </Card>
+    </Link>
   );
 }

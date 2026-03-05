@@ -433,6 +433,12 @@ export async function getAnnouncement(announcementId: string) {
   return { id: announcementDoc.id, ...announcementDoc.data() };
 }
 
+export async function incrementAnnouncementViews(announcementId: string) {
+  await updateDoc(doc(db, 'announcements', announcementId), {
+    views: increment(1),
+  });
+}
+
 export async function createAnnouncement(data: Record<string, any>) {
   const docRef = await addDoc(collection(db, 'announcements'), {
     ...data,
