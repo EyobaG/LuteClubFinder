@@ -82,6 +82,7 @@ interface AnnouncementFormProps {
   isSubmitting: boolean;
   onCancel: () => void;
   onUploadImage?: (file: File) => Promise<string>;
+  leaderMode?: boolean;
 }
 
 // Helper: convert Firestore Timestamp or Date to datetime-local string
@@ -106,6 +107,7 @@ export default function AnnouncementForm({
   isSubmitting,
   onCancel,
   onUploadImage,
+  leaderMode = false,
 }: AnnouncementFormProps) {
   const [imageUrl, setImageUrl] = useState<string | undefined>(existingAnnouncement?.imageUrl);
 
@@ -121,9 +123,9 @@ export default function AnnouncementForm({
     defaultValues: {
       title: '',
       content: '',
-      type: 'platform',
-      clubId: '',
-      clubName: '',
+      type: leaderMode ? 'club' : 'platform',
+      clubId: leaderMode && clubs.length === 1 ? clubs[0].id : '',
+      clubName: leaderMode && clubs.length === 1 ? clubs[0].name : '',
       audience: 'all',
       priority: 'normal',
       pinned: false,
@@ -214,12 +216,16 @@ export default function AnnouncementForm({
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Targeting</h3>
         <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Type <span className="text-red-500">*</span>
-              </label>
-              <Select {...register('type')} options={TYPE_OPTIONS} />
-            </div>
+            {leaderMode ? (
+              <input type="hidden" {...register('type')} value="club" />
+            ) : (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Type <span className="text-red-500">*</span>
+                </label>
+                <Select {...register('type')} options={TYPE_OPTIONS} />
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -229,7 +235,7 @@ export default function AnnouncementForm({
             </div>
           </div>
 
-          {announcementType === 'club' && (
+          {(announcementType === 'club' || leaderMode) && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Club <span className="text-red-500">*</span>

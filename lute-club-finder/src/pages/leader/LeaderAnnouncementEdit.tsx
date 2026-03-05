@@ -102,6 +102,7 @@ export default function LeaderAnnouncementEdit() {
           isSubmitting={submitting}
           onCancel={() => navigate('/leader/announcements')}
           onUploadImage={handleUploadImage}
+          leaderMode
         />
       </div>
     </div>

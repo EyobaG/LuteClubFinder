@@ -207,7 +207,7 @@ export default function AdminUsers() {
                         }}
                         className="w-32 !py-1 text-xs"
                       />
-                      {user.role === 'club_leader' && (
+                      {(user.role === 'club_leader' || user.clubLeaderOf?.length > 0) && (
                         <Button
                           size="sm"
                           variant="ghost"
@@ -222,7 +222,7 @@ export default function AdminUsers() {
                   </TableCell>
                 </TableRow>
                 {/* Expanded club leader section */}
-                {expandedUser === user.uid && user.role === 'club_leader' && (
+                {expandedUser === user.uid && (
                   <tr key={`${user.uid}-clubs`}>
                     <td colSpan={6} className="px-4 py-3 bg-gray-50">
                       <div className="ml-4">
