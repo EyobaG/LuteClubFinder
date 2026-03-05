@@ -343,10 +343,17 @@ export async function getEvent(eventId: string) {
   return { id: eventDoc.id, ...eventDoc.data() };
 }
 
+export async function incrementEventViews(eventId: string) {
+  await updateDoc(doc(db, 'events', eventId), {
+    views: increment(1),
+  });
+}
+
 export async function createEvent(data: Record<string, any>) {
   const docRef = await addDoc(collection(db, 'events'), {
     ...data,
     interestedCount: 0,
+    views: 0,
     currentAttendees: 0,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),

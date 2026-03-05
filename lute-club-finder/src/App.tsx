@@ -41,6 +41,7 @@ import LeaderEvents from './pages/leader/LeaderEvents';
 import LeaderEventEdit from './pages/leader/LeaderEventEdit';
 import LeaderAnnouncements from './pages/leader/LeaderAnnouncements';
 import LeaderAnnouncementEdit from './pages/leader/LeaderAnnouncementEdit';
+import LeaderAnalytics from './pages/leader/LeaderAnalytics';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -119,6 +120,7 @@ const router = createBrowserRouter([
           { path: 'announcements', element: <LeaderAnnouncements /> },
           { path: 'announcements/new', element: <LeaderAnnouncementEdit /> },
           { path: 'announcements/:id/edit', element: <LeaderAnnouncementEdit /> },
+          { path: 'analytics', element: <LeaderAnalytics /> },
         ],
       },
       { path: '*', element: <NotFoundPage /> },

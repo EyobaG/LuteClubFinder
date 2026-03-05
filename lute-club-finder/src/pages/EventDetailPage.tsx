@@ -1,7 +1,8 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useEvent, useToggleEventInterest } from '../hooks/useEvents';
 import { useAuth } from '../context/AuthContext';
+import { incrementEventViews } from '../lib/firebase';
 import { Badge, Button, LoadingSpinner, Breadcrumb } from '../components/ui';
 import { formatEventTime } from '../components/events';
 import type { EventType } from '../types';
@@ -28,6 +29,15 @@ export default function EventDetailPage() {
   const { user, userData, refreshUserData } = useAuth();
   const { data: event, isLoading, error } = useEvent(id);
   const toggleInterest = useToggleEventInterest();
+
+  // Increment views once on mount
+  const viewTracked = useRef(false);
+  useEffect(() => {
+    if (id && !viewTracked.current) {
+      viewTracked.current = true;
+      incrementEventViews(id).catch(() => {});
+    }
+  }, [id]);
 
   const isInterested = useMemo(
     () => userData?.interestedEvents?.includes(id ?? '') ?? false,

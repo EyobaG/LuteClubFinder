@@ -139,6 +139,7 @@ export interface ClubEvent {
   status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
   featured: boolean;
   interestedCount: number;
+  views: number;
   createdAt: any;
   updatedAt: any;
 }
