@@ -100,8 +100,8 @@ export default function Footer() {
 
         <div className="mt-10 pt-6 border-t border-gray-800 text-sm text-center">
           <p>
-            &copy; {new Date().getFullYear()} Lute Club Finder &mdash; Built with
-            ❤️ at Pacific Lutheran University
+            &copy; {new Date().getFullYear()} Lute Club Finder &ndash; Built with
+            ❤️ by Job Menjigso (Eyob) to Pacific Lutheran University
           </p>
         </div>
       </div>
