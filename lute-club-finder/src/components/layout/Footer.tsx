@@ -62,7 +62,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <Link to="/login" className="hover:text-white transition-colors">
+                <Link to="/leader" className="hover:text-white transition-colors">
                   Club Leader Portal
                 </Link>
               </li>
