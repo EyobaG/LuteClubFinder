@@ -1,8 +1,8 @@
 # Lute Club Finder - Development Progress
 
-> **Last Updated**: March 4, 2026  
-> **Current Phase**: Phase 7 — COMPLETE ✅ | Next: Phase 8 (Homepage & Navigation Polish)  
-> **Overall Progress**: ██████████████████░░ 90%
+> **Last Updated**: March 5, 2026  
+> **Current Phase**: Phase 8 — COMPLETE ✅ | Next: Phase 9 (Out of Comfort Zone Mode)  
+> **Overall Progress**: ███████████████████░ 95%
 
 ---
 
@@ -140,8 +140,12 @@
 
 | # | Task | Status | Date | Notes |
 |---|------|--------|------|-------|
-| 8.1 | Homepage (hero, featured, events, announcements) | ⬜ | — | |
-| 8.2 | Navigation & layout polish | ⬜ | — | |
+| 8.1a | Category quick-links grid on homepage | ✅ | Mar 5 | 9 category cards (emoji icons + CATEGORY_COLORS) between Quick Stats and Featured Clubs, each links to /discover?category=<value> with hover scale effect |
+| 8.1b | "Out of Comfort Zone" teaser on homepage | ✅ | Mar 5 | Purple-to-indigo gradient CTA shown only when user is logged in AND quizCompleted === true, links to /comfort-zone (page built in Phase 9) |
+| 8.1c | DiscoverPage accepts ?category= query param | ✅ | Mar 5 | useSearchParams reads category on mount, pre-selects the category pill so homepage quick-links work end-to-end |
+| 8.2a | User avatar dropdown menu | ✅ | Mar 5 | New UserMenu component: avatar triggers positioned dropdown with Profile, Saved Clubs, My Clubs (leader/admin), Admin (admin), Sign Out. Closes on outside click or navigation. Replaces standalone role links on desktop header; mobile menu keeps flat links |
+| 8.2b | Breadcrumbs on detail pages | ✅ | Mar 5 | New Breadcrumb component (Home > Parent > Current). Added to ClubDetailPage (Home > Discover > club.name), EventDetailPage (Home > Events > event.title), AnnouncementDetailPage (Home > News > announcement.title). Replaced old back-link arrows |
+| 8.2c | Footer polish | ✅ | Mar 5 | Expanded from 4-col to 5-col grid: Brand, Explore, Categories (9 category links to /discover?category=), Quick Links (Profile, Saved, Leader Portal, PLU Website). Added "Built with ❤️ at PLU" tagline |
 
 ---
 
@@ -193,6 +197,7 @@
 
 | Date | Change |
 |------|--------|
+| Mar 5, 2026 | **Phase 8 COMPLETE — Homepage & Navigation Polish.** **2 new files**: Breadcrumb component (reusable `Home > Parent > Current` nav with amber-600 links, truncation on mobile), UserMenu component (avatar dropdown with Profile, Saved Clubs, My Clubs, Admin, Sign Out; closes on outside click/navigation). **HomePage**: added 9-card "Browse by Category" grid (emoji icons + `CATEGORY_COLORS`, links to `/discover?category=`), "Out of Comfort Zone" teaser (purple gradient CTA, only shown for logged-in quiz completers, links to `/comfort-zone`). **DiscoverPage**: reads `?category=` query param on mount to pre-select category pill. **Header**: replaced standalone My Clubs/Admin/avatar links on desktop with UserMenu dropdown; mobile menu unchanged. **Detail pages**: replaced back-link arrows with breadcrumbs on ClubDetailPage, EventDetailPage, AnnouncementDetailPage. **Footer**: expanded to 5-col grid with new Categories (9 links) and Quick Links (Profile, Saved, Leader Portal, PLU Website) columns; added "Built with ❤️" tagline. Build passes with zero errors. |
 | Mar 5, 2026 | **Footer fix.** Club Leader Portal link in footer pointed to `/login` instead of `/leader`. Changed to `/leader` so it routes correctly — unauthenticated users get redirected to login by LeaderRoute, non-leaders see an Access Denied page, leaders/admins enter the portal. |
 | Mar 4, 2026 | **Phase 7 bug fixes.** (1) LeaderRoute was blocking `club_leader` users who had no clubs assigned yet (`clubLeaderOf` empty) — removed the array-length check so any `club_leader` can access the portal and see helpful empty states. (2) AdminUsers page only showed the "Clubs" expand button for existing `club_leader` roles — now also shows it when `clubLeaderOf` has entries, making club assignment accessible regardless of current role. (3) AnnouncementForm in leader portal defaulted type to `'platform'`, hiding the club dropdown — zod validation then rejected the submission (club-type requires `clubId`). Fix: added `leaderMode` prop that defaults type to `'club'`, auto-selects the club when leader has only one, hides the type selector, and always shows the club dropdown. |
 | Mar 4, 2026 | **Phase 7 COMPLETE — Club Leader Portal.** Built full leader portal at `/leader` with indigo-themed sidebar layout. **9 new files**: LeaderRoute (auth guard for club_leader/admin), useLeader hook (4 query hooks: useLeaderClubs, useLeaderEvents, useLeaderAnnouncements, useLeaderStats with client-side filtering by clubLeaderOf), LeaderLayout (sidebar + mobile drawer), LeaderDashboard (5 stat cards, quick actions, My Clubs grid with per-club stats), LeaderClubEdit (scoped form hiding admin-only fields: name/category/status/featured/verified), LeaderEvents (table with search/status/type/club filters, delete dialog), LeaderEventEdit (create/edit with club dropdown restricted to leader's clubs), LeaderAnnouncements (table with search/priority/club filters, delete dialog), LeaderAnnouncementEdit (create/edit with type forced to "club"). Updated Header with "My Clubs" link for club_leader + admin roles (desktop + mobile). Registered 8 nested routes under /leader. Build passes with zero errors. |

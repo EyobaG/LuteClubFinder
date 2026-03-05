@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../ui/Button';
+import UserMenu from './UserMenu';
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -75,11 +76,7 @@ export default function Header() {
               </Link>
             )}
             {user ? (
-              <Link to="/profile" className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 font-medium text-sm">
-                  {userData?.displayName?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
-                </div>
-              </Link>
+              <UserMenu />
             ) : (
               <Link to="/login">
                 <Button size="sm">Sign In</Button>

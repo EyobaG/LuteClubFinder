@@ -10,3 +10,4 @@ export { default as Table, TableHead, TableBody, TableRow, TableHeaderCell, Tabl
 export { ToastProvider, useToast } from './Toast';
 export { default as Toggle } from './Toggle';
 export { default as ImageUpload } from './ImageUpload';
+export { default as Breadcrumb } from './Breadcrumb';

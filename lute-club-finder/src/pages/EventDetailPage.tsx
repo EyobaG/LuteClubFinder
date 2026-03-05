@@ -2,7 +2,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { useEvent, useToggleEventInterest } from '../hooks/useEvents';
 import { useAuth } from '../context/AuthContext';
-import { Badge, Button, LoadingSpinner } from '../components/ui';
+import { Badge, Button, LoadingSpinner, Breadcrumb } from '../components/ui';
 import { formatEventTime } from '../components/events';
 import type { EventType } from '../types';
 
@@ -77,16 +77,13 @@ export default function EventDetailPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Back link */}
-      <Link
-        to="/events"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-6"
-      >
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-        </svg>
-        Back to Events
-      </Link>
+      <Breadcrumb
+        items={[
+          { label: 'Home', to: '/' },
+          { label: 'Events', to: '/events' },
+          { label: event.title },
+        ]}
+      />
 
       {/* ===== Hero ===== */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">

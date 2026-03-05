@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useClubs } from '../hooks/useClubs';
 import { useAuth } from '../context/AuthContext';
 import { saveClub, unsaveClub } from '../lib/firebase';
@@ -11,11 +12,20 @@ type SortOption = 'a-z' | 'z-a' | 'most-saved' | 'most-viewed';
 export default function DiscoverPage() {
   const { user, userData, refreshUserData } = useAuth();
   const { data: clubs, isLoading, error } = useClubs();
+  const [searchParams] = useSearchParams();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ClubCategory | 'all'>('all');
   const [sortBy, setSortBy] = useState<SortOption>('a-z');
+
+  // Initialize category from URL query param
+  useEffect(() => {
+    const cat = searchParams.get('category') as ClubCategory | null;
+    if (cat && CATEGORIES.some((c) => c.value === cat)) {
+      setSelectedCategory(cat);
+    }
+  }, [searchParams]);
 
   // Debounce the search input
   useEffect(() => {

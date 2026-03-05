@@ -4,7 +4,7 @@ import { useClub, useClubs } from '../hooks/useClubs';
 import { useUpcomingEvents } from '../hooks/useEvents';
 import { useAuth } from '../context/AuthContext';
 import { incrementClubViews, saveClub, unsaveClub } from '../lib/firebase';
-import { Badge, Button, LoadingSpinner } from '../components/ui';
+import { Badge, Button, LoadingSpinner, Breadcrumb } from '../components/ui';
 import { ClubCard } from '../components/clubs';
 import { EventCard } from '../components/events';
 import { CATEGORIES, type Club, type ClubCategory } from '../types';
@@ -102,16 +102,13 @@ export default function ClubDetailPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Back link */}
-      <Link
-        to="/discover"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-6"
-      >
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-        </svg>
-        Back to Discover
-      </Link>
+      <Breadcrumb
+        items={[
+          { label: 'Home', to: '/' },
+          { label: 'Discover', to: '/discover' },
+          { label: club.name },
+        ]}
+      />
 
       {/* ===== Hero ===== */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
