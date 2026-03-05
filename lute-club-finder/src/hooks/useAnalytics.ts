@@ -45,21 +45,16 @@ export function useAnalyticsData() {
     return Math.round((stats.quizCompletions / stats.totalUsers) * 100);
   }, [stats]);
 
-  // ---- Users by role ----
-  // Count functionally: anyone with clubLeaderOf entries is a club leader,
-  // even if their role field is 'admin'. For the pie chart we use primary role
-  // (admin > club_leader > student) so each user is counted once.
+  // ---- Users by role (non-exclusive) ----
+  // A user can be counted in multiple categories (e.g. an admin who leads clubs
+  // appears in both Admins and Club Leaders).
   const usersByRole = useMemo(() => {
     if (!users) return { student: 0, club_leader: 0, admin: 0 };
     const counts = { student: 0, club_leader: 0, admin: 0 };
     users.forEach((u: UserData) => {
-      if (u.role === 'admin') {
-        counts.admin++;
-      } else if (u.role === 'club_leader' || (u.clubLeaderOf && u.clubLeaderOf.length > 0)) {
-        counts.club_leader++;
-      } else {
-        counts.student++;
-      }
+      if (u.role === 'admin') counts.admin++;
+      if (u.role === 'club_leader' || (u.clubLeaderOf && u.clubLeaderOf.length > 0)) counts.club_leader++;
+      if (u.role === 'student') counts.student++;
     });
     return counts;
   }, [users]);

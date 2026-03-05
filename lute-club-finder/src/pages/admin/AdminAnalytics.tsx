@@ -34,12 +34,11 @@ export default function AdminAnalytics() {
     return <LoadingSpinner className="py-12" />;
   }
 
-  const allRoleData = [
-    { name: 'Students', value: usersByRole.student, color: '#6b7280' },
-    { name: 'Club Leaders', value: usersByRole.club_leader, color: '#3b82f6' },
-    { name: 'Admins', value: usersByRole.admin, color: '#f59e0b' },
+  const roleChartData = [
+    { name: 'Students', count: usersByRole.student, fill: '#6b7280' },
+    { name: 'Club Leaders', count: usersByRole.club_leader, fill: '#3b82f6' },
+    { name: 'Admins', count: usersByRole.admin, fill: '#f59e0b' },
   ];
-  const roleChartData = allRoleData.filter((r) => r.value > 0);
 
   return (
     <div>
@@ -83,32 +82,20 @@ export default function AdminAnalytics() {
         {/* Users by Role (1/3) */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <h3 className="font-semibold text-gray-900 mb-4">Users by Role</h3>
+          <p className="text-xs text-gray-400 -mt-3 mb-4">Users may appear in multiple roles</p>
           <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie
-                data={roleChartData}
-                cx="50%"
-                cy="50%"
-                innerRadius={50}
-                outerRadius={80}
-                dataKey="value"
-              >
-                {roleChartData.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} />
-                ))}
-              </Pie>
+            <BarChart data={roleChartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+              <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
               <Tooltip />
-            </PieChart>
+              <Bar dataKey="count" name="Users" radius={[4, 4, 0, 0]}>
+                {roleChartData.map((entry, i) => (
+                  <Cell key={i} fill={entry.fill} />
+                ))}
+              </Bar>
+            </BarChart>
           </ResponsiveContainer>
-          <div className="space-y-2 mt-2">
-            {allRoleData.map((r) => (
-              <div key={r.name} className="flex items-center gap-2 text-sm">
-                <span className="h-3 w-3 rounded-full" style={{ backgroundColor: r.color }} />
-                <span className="text-gray-600">{r.name}</span>
-                <span className="ml-auto font-medium text-gray-900">{r.value}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
