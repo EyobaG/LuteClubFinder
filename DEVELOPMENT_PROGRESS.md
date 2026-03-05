@@ -1,8 +1,8 @@
 # Lute Club Finder - Development Progress
 
 > **Last Updated**: March 5, 2026  
-> **Current Phase**: Phase 8 — COMPLETE ✅ | Next: Phase 9 (Out of Comfort Zone Mode)  
-> **Overall Progress**: ███████████████████░ 95%
+> **Current Phase**: Phase 9 — COMPLETE ✅ | Next: Phase 10 (Analytics & Tracking)  
+> **Overall Progress**: ████████████████████ 97%
 
 ---
 
@@ -153,9 +153,11 @@
 
 | # | Task | Status | Date | Notes |
 |---|------|--------|------|-------|
-| 9.1 | Comfort zone algorithm | ⬜ | — | |
-| 9.2 | Comfort zone discovery page | ⬜ | — | |
-| 9.3 | Homepage integration | ⬜ | — | |
+| 9.1a | View tracking on user docs | ✅ | Mar 5 | Added `trackClubView(userId, clubId)` Firebase helper using `arrayUnion` on new `viewedClubs` field. ClubDetailPage calls it on mount (ref-guarded to prevent duplicates). Added `viewedClubs: string[]` to UserData type. |
+| 9.1b | Comfort zone algorithm | ✅ | Mar 5 | New `src/lib/comfortZone.ts`: ported `getComfortZoneRecommendations()` and `generateNoveltyReason()` from `examples/quiz-matching-example.js`. Reuses `calculateClubMatch()` and `generateMatchExplanation()` from quizMatcher.ts. Filters: skip viewed, skip saved, skip explored categories (derived from saved clubs + interest→category mapping). Score range 30-70%. Returns `ComfortZoneMatch[]` with novelty reasons (new category, new tags, new vibes). |
+| 9.2a | useComfortZone hook | ✅ | Mar 5 | New `src/hooks/useComfortZone.ts`: assembles user history (viewedClubs, savedClubs), computes explored categories via `getExploredCategories()`, calls algorithm, returns `{ recommendations, isLoading, isQuizCompleted }`. Only computes when quizCompleted. |
+| 9.2b | Comfort zone discovery page | ✅ | Mar 5 | New `src/pages/ComfortZonePage.tsx` at `/comfort-zone` (protected route): quiz-not-completed gate with CTA to take quiz, 5-10 ranked recommendation cards with rank badge, club name + category badge, purple novelty reason pill (✨), match reasons, circular match % indicator (purple theme), save/bookmark toggle. Empty state when no unexplored clubs remain. Breadcrumb navigation. |
+| 9.3 | Homepage integration | ✅ | Mar 5 | Replaced Phase 8 purple gradient CTA banner with `ComfortZonePreview` component: uses `useComfortZone(3)` to show 3 inline comfort zone cards (club name, category badge, novelty pill, short description, match %). Falls back to original CTA banner when loading or no recommendations. "See More →" link to `/comfort-zone`. |
 
 ---
 
@@ -197,6 +199,7 @@
 
 | Date | Change |
 |------|--------|
+| Mar 5, 2026 | **Phase 9 COMPLETE — "Out of Comfort Zone" Mode.** **3 new files**: `comfortZone.ts` (algorithm ported from examples/quiz-matching-example.js — filters viewed/saved/explored-category clubs, keeps 30-70% match scores, generates novelty reasons for new categories/tags/vibes; includes interest→category mapping for 25+ tags), `useComfortZone.ts` (React hook assembling user history + explored categories + algorithm call), `ComfortZonePage.tsx` (protected `/comfort-zone` route with quiz gate, ranked cards with purple-themed rank badges, novelty reason pills, circular match % indicators, save toggles, breadcrumbs, empty state). **Modified files**: `types/index.ts` (added `viewedClubs: string[]` to UserData), `firebase.ts` (added `trackClubView()` using arrayUnion), `ClubDetailPage.tsx` (calls trackClubView on mount with ref guard), `App.tsx` (added protected comfort-zone route), `HomePage.tsx` (replaced purple CTA banner with `ComfortZonePreview` component showing 3 inline comfort zone cards with novelty pills + "See More →" link; falls back to CTA banner when loading/empty). |
 | Mar 5, 2026 | **Phase 8 COMPLETE — Homepage & Navigation Polish.** **2 new files**: Breadcrumb component (reusable `Home > Parent > Current` nav with amber-600 links, truncation on mobile), UserMenu component (avatar dropdown with Profile, Saved Clubs, My Clubs, Admin, Sign Out; closes on outside click/navigation). **HomePage**: added 9-card "Browse by Category" grid (emoji icons + `CATEGORY_COLORS`, links to `/discover?category=`), "Out of Comfort Zone" teaser (purple gradient CTA, only shown for logged-in quiz completers, links to `/comfort-zone`). **DiscoverPage**: reads `?category=` query param on mount to pre-select category pill. **Header**: replaced standalone My Clubs/Admin/avatar links on desktop with UserMenu dropdown; mobile menu unchanged. **Detail pages**: replaced back-link arrows with breadcrumbs on ClubDetailPage, EventDetailPage, AnnouncementDetailPage. **Footer**: expanded to 5-col grid with new Categories (9 links) and Quick Links (Profile, Saved, Leader Portal, PLU Website) columns; added "Built with ❤️" tagline. Build passes with zero errors. |
 | Mar 5, 2026 | **Footer fix.** Club Leader Portal link in footer pointed to `/login` instead of `/leader`. Changed to `/leader` so it routes correctly — unauthenticated users get redirected to login by LeaderRoute, non-leaders see an Access Denied page, leaders/admins enter the portal. |
 | Mar 4, 2026 | **Phase 7 bug fixes.** (1) LeaderRoute was blocking `club_leader` users who had no clubs assigned yet (`clubLeaderOf` empty) — removed the array-length check so any `club_leader` can access the portal and see helpful empty states. (2) AdminUsers page only showed the "Clubs" expand button for existing `club_leader` roles — now also shows it when `clubLeaderOf` has entries, making club assignment accessible regardless of current role. (3) AnnouncementForm in leader portal defaulted type to `'platform'`, hiding the club dropdown — zod validation then rejected the submission (club-type requires `clubId`). Fix: added `leaderMode` prop that defaults type to `'club'`, auto-selects the club when leader has only one, hides the type selector, and always shows the club dropdown. |

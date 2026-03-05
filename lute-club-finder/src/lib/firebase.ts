@@ -196,6 +196,20 @@ export async function incrementClubViews(clubId: string) {
 }
 
 // ============================================
+// VIEW TRACKING
+// ============================================
+
+/**
+ * Track that a user viewed a club detail page.
+ * Uses arrayUnion so each club ID is stored at most once.
+ */
+export async function trackClubView(userId: string, clubId: string) {
+  await updateDoc(doc(db, 'users', userId), {
+    viewedClubs: arrayUnion(clubId),
+  });
+}
+
+// ============================================
 // BOOKMARKS
 // ============================================
 

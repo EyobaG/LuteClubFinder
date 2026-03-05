@@ -149,7 +149,7 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* Out of Comfort Zone Teaser */}
+      {/* Out of Comfort Zone CTA */}
       {user && userData?.quizCompleted && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           <div className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl p-8 sm:p-12 text-center text-white">
@@ -161,9 +161,9 @@ export default function HomePage() {
               compatible-but-different clubs to broaden your horizons.
             </p>
             <Link to="/comfort-zone">
-              <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-50">
+              <button className="inline-flex items-center justify-center rounded-lg font-medium px-6 py-3 text-lg bg-white text-purple-700 hover:bg-purple-50 transition-colors duration-200">
                 Explore Recommendations
-              </Button>
+              </button>
             </Link>
           </div>
         </section>

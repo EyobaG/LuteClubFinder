@@ -14,6 +14,7 @@ import EventsPage from './pages/EventsPage';
 import AnnouncementsPage from './pages/AnnouncementsPage';
 import ProfilePage from './pages/ProfilePage';
 import SavedClubsPage from './pages/SavedClubsPage';
+import ComfortZonePage from './pages/ComfortZonePage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -76,6 +77,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <SavedClubsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'comfort-zone',
+        element: (
+          <ProtectedRoute>
+            <ComfortZonePage />
           </ProtectedRoute>
         ),
       },

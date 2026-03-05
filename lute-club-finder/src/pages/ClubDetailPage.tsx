@@ -1,9 +1,9 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useEffect, useMemo, useCallback } from 'react';
+import { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useClub, useClubs } from '../hooks/useClubs';
 import { useUpcomingEvents } from '../hooks/useEvents';
 import { useAuth } from '../context/AuthContext';
-import { incrementClubViews, saveClub, unsaveClub } from '../lib/firebase';
+import { incrementClubViews, trackClubView, saveClub, unsaveClub } from '../lib/firebase';
 import { Badge, Button, LoadingSpinner, Breadcrumb } from '../components/ui';
 import { ClubCard } from '../components/clubs';
 import { EventCard } from '../components/events';
@@ -17,12 +17,21 @@ export default function ClubDetailPage() {
   const { data: allClubs } = useClubs();
   const { data: clubEvents } = useUpcomingEvents(id, 3);
 
-  // Track page view
+  // Track page view (club counter)
   useEffect(() => {
     if (id) {
       incrementClubViews(id).catch(() => {});
     }
   }, [id]);
+
+  // Track view on user doc (for comfort zone filtering)
+  const viewTracked = useRef(false);
+  useEffect(() => {
+    if (id && user && !viewTracked.current) {
+      viewTracked.current = true;
+      trackClubView(user.uid, id).catch(() => {});
+    }
+  }, [id, user]);
 
   // Related clubs (same category, exclude current)
   const relatedClubs = useMemo(() => {

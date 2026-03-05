@@ -23,6 +23,7 @@ export interface UserData {
   clubLeaderOf: string[];
   preferences: Partial<UserPreferences>;
   savedClubs: string[];
+  viewedClubs: string[];
   interestedEvents: string[];
   quizCompleted: boolean;
   quizResults?: QuizResults;
