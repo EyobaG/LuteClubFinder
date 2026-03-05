@@ -17,11 +17,15 @@ import SavedClubsPage from './pages/SavedClubsPage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 
+import EventDetailPage from './pages/EventDetailPage';
+
 // Admin Pages
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminClubs from './pages/admin/AdminClubs';
 import AdminClubEdit from './pages/admin/AdminClubEdit';
+import AdminEvents from './pages/admin/AdminEvents';
+import AdminEventEdit from './pages/admin/AdminEventEdit';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminAnalytics from './pages/admin/AdminAnalytics';
 
@@ -44,6 +48,7 @@ const router = createBrowserRouter([
       { path: 'clubs/:id', element: <ClubDetailPage /> },
       { path: 'quiz', element: <QuizPage /> },
       { path: 'events', element: <EventsPage /> },
+      { path: 'events/:id', element: <EventDetailPage /> },
       { path: 'announcements', element: <AnnouncementsPage /> },
       {
         path: 'profile',
@@ -70,6 +75,9 @@ const router = createBrowserRouter([
           { path: 'clubs', element: <AdminClubs /> },
           { path: 'clubs/new', element: <AdminClubEdit /> },
           { path: 'clubs/:id/edit', element: <AdminClubEdit /> },
+          { path: 'events', element: <AdminEvents /> },
+          { path: 'events/new', element: <AdminEventEdit /> },
+          { path: 'events/:id/edit', element: <AdminEventEdit /> },
           { path: 'users', element: <AdminUsers /> },
           { path: 'analytics', element: <AdminAnalytics /> },
         ],

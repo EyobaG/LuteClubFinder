@@ -1,7 +1,14 @@
 import { Link } from 'react-router-dom';
 import Button from '../components/ui/Button';
+import { useUpcomingEvents } from '../hooks/useEvents';
+import { useClubs } from '../hooks/useClubs';
+import { EventCard } from '../components/events';
+import { ClubCard } from '../components/clubs';
 
 export default function HomePage() {
+  const { data: upcomingEvents } = useUpcomingEvents(undefined, 6);
+  const { data: clubs } = useClubs({ featured: true, limitCount: 4 });
+
   return (
     <div>
       {/* Hero Section */}
@@ -47,20 +54,42 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Clubs Placeholder */}
+      {/* Featured Clubs */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Clubs</h2>
-        <p className="text-gray-500">
-          Featured clubs will appear here once the club discovery feature is built.
-        </p>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Featured Clubs</h2>
+          <Link to="/discover" className="text-sm text-amber-600 hover:text-amber-700 font-medium">
+            View All →
+          </Link>
+        </div>
+        {clubs && clubs.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {clubs.map((club) => (
+              <ClubCard key={club.id} club={club} hideSave />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No featured clubs yet.</p>
+        )}
       </section>
 
-      {/* Upcoming Events Placeholder */}
+      {/* Upcoming Events */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Upcoming Events</h2>
-        <p className="text-gray-500">
-          Events will appear here once the events system is built.
-        </p>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Upcoming Events</h2>
+          <Link to="/events" className="text-sm text-amber-600 hover:text-amber-700 font-medium">
+            View All →
+          </Link>
+        </div>
+        {upcomingEvents && upcomingEvents.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {upcomingEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No upcoming events right now. Check back later!</p>
+        )}
       </section>
     </div>
   );

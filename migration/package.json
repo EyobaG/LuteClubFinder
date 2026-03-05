@@ -6,6 +6,7 @@
     "analyze": "node data-analysis.js",
     "transform": "node clean-and-transform.js",
     "import": "node firestore-import.js",
+    "seed-events": "node seed-events.js",
     "migrate": "npm run transform && npm run import"
   },
   "dependencies": {

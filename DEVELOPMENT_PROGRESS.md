@@ -1,8 +1,8 @@
 # Lute Club Finder - Development Progress
 
-> **Last Updated**: March 3, 2026  
-> **Current Phase**: Phase 4 — COMPLETE ✅ | Next: Phase 5 (Events System)  
-> **Overall Progress**: ██████████████░░░░░░ 70%
+> **Last Updated**: March 4, 2026  
+> **Current Phase**: Phase 5 — COMPLETE ✅ | Next: Phase 6 (Announcements System)  
+> **Overall Progress**: ████████████████░░░░ 80%
 
 ---
 
@@ -100,6 +100,8 @@
 | 4.2 | Club management (CRUD) | ✅ | Mar 3 | AdminClubs list (search/filter/delete), AdminClubEdit form (react-hook-form + zod, field arrays for officers, image upload via Firebase Storage) |
 | 4.3 | User management | ✅ | Mar 3 | AdminUsers with role changes, club leader assignment/removal, expandable rows |
 | 4.4 | Admin analytics overview | ✅ | Mar 3 | AdminAnalytics: stat cards, users by role, top viewed/saved clubs, clubs by category breakdown |
+| 4.5 | Bug fix: Required field indicators | ✅ | Mar 3 | Added * to required fields (Club Name, Short Description, Full Description, Category) on AdminClubEdit form |
+| 4.6 | Bug fix: Firestore undefined field error | ✅ | Mar 3 | socialLinks used `|| undefined` which Firestore rejects; now filters out empty entries with Object.fromEntries |
 
 ---
 
@@ -107,10 +109,10 @@
 
 | # | Task | Status | Date | Notes |
 |---|------|--------|------|-------|
-| 5.1 | Event data hooks | ⬜ | — | |
-| 5.2 | Events list page | ⬜ | — | |
-| 5.3 | Event detail page | ⬜ | — | |
-| 5.4 | Event creation form (leaders/admin) | ⬜ | — | |
+| 5.1 | Event data hooks | ✅ | Mar 3 | useUpcomingEvents, useEvents (with filters), useAllEvents, useEvent, useCreateEvent, useUpdateEvent, useDeleteEvent in src/hooks/useEvents.ts |
+| 5.2 | Events list page | ✅ | Mar 3 | EventsPage: debounced search, event type pills, club dropdown, date filter (Upcoming/Past/All), sort (Soonest/Latest), responsive grid, loading skeletons, empty state |
+| 5.3 | Event detail page | ✅ | Mar 3 | EventDetailPage: hero with type/status/virtual badges, date & time section, location + virtual link, description, registration section with capacity, tags, interested toggle, host club link |
+| 5.4 | Event creation/edit form (admin) | ✅ | Mar 3 | EventForm (zod + react-hook-form), AdminEvents list (search/filter/delete), AdminEventEdit (create/edit modes with image upload). EventCard component, barrel exports. Routes + admin sidebar link. ClubDetailPage + HomePage integrated with real event data. |
 
 ---
 
@@ -191,6 +193,9 @@
 
 | Date | Change |
 |------|--------|
+| Mar 4, 2026 | **Phase 5 bug fix: "I'm Interested" count not updating.** The toggle called `toggleEventInterest` directly without invalidating React Query caches, so the `interestedCount` stayed stale on both the event detail page and admin portal. Fix: created `useToggleEventInterest` mutation hook that invalidates `['event', eventId]`, `['events']`, and `['admin', 'events']` query keys on success. Updated EventDetailPage to use the hook. Also added `interestedEvents: string[]` to the `UserData` type (removed `as any` casts). |
+| Mar 3, 2026 | **Phase 5 COMPLETE.** Events System: added 8 Firebase event helpers (getEvents with filters, getUpcomingEvents, getEvent, createEvent, updateEvent, deleteEvent, toggleEventInterest, uploadEventImage) + 7 React Query hooks. Built EventCard component (type badge, virtual badge, date/time, interested count), EventForm (zod validation with refinements for endTime > startTime and virtual link required, react-hook-form, datetime-local inputs, Toggle integration via setValue, image upload). EventsPage with debounced search, event type filter pills, club dropdown, date filter (upcoming/past/all), sort, skeletons, empty state. EventDetailPage with full info sections, registration, interested toggle. AdminEvents list with search/filter/delete + AdminEventEdit create/edit page. Added 4 routes (events/:id, admin/events, admin/events/new, admin/events/:id/edit) + Events sidebar link. Integrated upcoming events on ClubDetailPage and HomePage with real data (featured clubs + events). Build passes with zero errors. |
+| Mar 3, 2026 | **Phase 4 bug fixes.** Added required field `*` indicators on AdminClubEdit form (name, shortDescription, description, category). Fixed Firestore `updateDoc()` crash caused by `undefined` values in socialLinks — empty social link fields are now omitted from the document instead of set to undefined. |
 | Mar 3, 2026 | **Phase 4 COMPLETE.** Admin Portal: installed react-hook-form + @hookform/resolvers + zod. Built 7 new shared UI components (Select, Textarea, Modal/ConfirmDialog, Table, Toast/ToastProvider, Toggle, ImageUpload). Added ~10 Firebase admin helpers (CRUD clubs, users, image upload/delete, stats) + 8 React Query admin hooks (3 queries, 5 mutations). AdminLayout with dark sidebar + mobile drawer, AdminDashboard with stat cards & quick actions, AdminClubs list page with search/filter/delete, AdminClubEdit form (zod validation, useFieldArray for officers, drag-and-drop image upload), AdminUsers page with role management + club leader assignment, AdminAnalytics with stat cards, role distribution bars, top 10 viewed/saved lists, category breakdown. Header updated with conditional Admin link for admin users. Build passes with zero errors. |
 | Mar 3, 2026 | **Phase 3 COMPLETE.** Quiz Matching Engine: useQuizQuestions React Query hook, quizMatcher.ts (TS port of matching algorithm with 5 weighted dimensions), QuizLanding component (hero + previous results summary), QuizQuestionCard (visual card-style options for single/multi choice), QuizProgress (bar + step dots), QuizResults (ranked top-10 with circular % indicator, match reasons, save/retake actions), full useReducer state machine in QuizPage (landing→quiz→results), slide-in CSS animation between questions, anonymous quiz with sessionStorage persistence + auto-save on login return, ProfilePage quiz CTA updated to show completion state. Build passes with zero errors. |
 | Mar 3, 2026 | **Phase 2 COMPLETE.** Implemented full Club Discovery feature: React Query data hooks (useClubs, useClub, useSearchClubs), ClubCard component with category badges/tags/meeting info/save toggle, DiscoverPage with debounced search, category filter pills, sort options (A-Z, Z-A, Most Saved, Most Viewed), responsive 3-column grid, loading skeletons, and empty state. ClubDetailPage with full club info (description, meeting schedule, officers list, social links, tags, vibes, attributes at-a-glance, related clubs by category, view tracking). Save/bookmark system with useSavedClubs hook for DRY toggle logic. SavedClubsPage showing bookmarked clubs with empty state. Also fixed pre-existing verbatimModuleSyntax type-import errors in Button, Card, Input. Build passes with zero errors. |
@@ -210,8 +215,8 @@
 
 ## Quick Stats
 
-- **Total Tasks**: 60
-- **Completed**: 30 (9 pre-dev + 7 Phase 0 + 8 Phase 1 + 6 Phase 2 + 8 Phase 3 + 4 Phase 4 — includes bug fixes)
+- **Total Tasks**: 62
+- **Completed**: 32 (9 pre-dev + 7 Phase 0 + 8 Phase 1 + 6 Phase 2 + 8 Phase 3 + 6 Phase 4 — includes bug fixes)
 - **In Progress**: 0
 - **Remaining**: 30
 

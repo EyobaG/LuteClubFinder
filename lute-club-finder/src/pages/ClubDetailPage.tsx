@@ -1,10 +1,12 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useEffect, useMemo, useCallback } from 'react';
 import { useClub, useClubs } from '../hooks/useClubs';
+import { useUpcomingEvents } from '../hooks/useEvents';
 import { useAuth } from '../context/AuthContext';
 import { incrementClubViews, saveClub, unsaveClub } from '../lib/firebase';
 import { Badge, Button, LoadingSpinner } from '../components/ui';
 import { ClubCard } from '../components/clubs';
+import { EventCard } from '../components/events';
 import { CATEGORIES, type Club, type ClubCategory } from '../types';
 
 export default function ClubDetailPage() {
@@ -13,6 +15,7 @@ export default function ClubDetailPage() {
   const { user, userData, refreshUserData } = useAuth();
   const { data: club, isLoading, error } = useClub(id);
   const { data: allClubs } = useClubs();
+  const { data: clubEvents } = useUpcomingEvents(id, 3);
 
   // Track page view
   useEffect(() => {
@@ -349,6 +352,28 @@ export default function ClubDetailPage() {
           </div>
         </section>
       )}
+
+      {/* ===== Upcoming Events ===== */}
+      <section className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-gray-900">Upcoming Events</h2>
+          <Link
+            to={`/events?club=${id}`}
+            className="text-sm text-amber-600 hover:text-amber-700 font-medium"
+          >
+            View All →
+          </Link>
+        </div>
+        {clubEvents && clubEvents.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {clubEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-gray-500">No upcoming events for this club.</p>
+        )}
+      </section>
 
       {/* ===== Related Clubs ===== */}
       {relatedClubs.length > 0 && (

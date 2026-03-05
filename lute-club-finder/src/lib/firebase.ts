@@ -262,17 +262,104 @@ export async function submitQuizResults(
 // EVENTS
 // ============================================
 
-export async function getUpcomingEvents(clubId?: string) {
+export async function getUpcomingEvents(clubId?: string, limitCount?: number) {
   const constraints: any[] = [
     where('status', '==', 'upcoming'),
-    where('startTime', '>=', new Date()),
     orderBy('startTime', 'asc'),
   ];
   if (clubId) constraints.unshift(where('clubId', '==', clubId));
+  if (limitCount) constraints.push(limit(limitCount));
 
   const q = query(collection(db, 'events'), ...constraints);
   const snapshot = await getDocs(q);
   return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+export async function getEvents(filters?: {
+  clubId?: string;
+  eventType?: string;
+  status?: string;
+}) {
+  const constraints: any[] = [orderBy('startTime', 'desc')];
+
+  if (filters?.clubId) {
+    constraints.unshift(where('clubId', '==', filters.clubId));
+  }
+  if (filters?.eventType) {
+    constraints.unshift(where('eventType', '==', filters.eventType));
+  }
+  if (filters?.status) {
+    constraints.unshift(where('status', '==', filters.status));
+  }
+
+  const q = query(collection(db, 'events'), ...constraints);
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+export async function getAllEvents() {
+  const q = query(collection(db, 'events'), orderBy('startTime', 'desc'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+export async function getEvent(eventId: string) {
+  const eventDoc = await getDoc(doc(db, 'events', eventId));
+  if (!eventDoc.exists()) throw new Error('Event not found');
+  return { id: eventDoc.id, ...eventDoc.data() };
+}
+
+export async function createEvent(data: Record<string, any>) {
+  const docRef = await addDoc(collection(db, 'events'), {
+    ...data,
+    interestedCount: 0,
+    currentAttendees: 0,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+  return docRef.id;
+}
+
+export async function updateEvent(eventId: string, data: Record<string, any>) {
+  await updateDoc(doc(db, 'events', eventId), {
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function deleteEvent(eventId: string) {
+  await deleteDoc(doc(db, 'events', eventId));
+}
+
+export async function toggleEventInterest(eventId: string, userId: string, isInterested: boolean) {
+  if (isInterested) {
+    // Remove interest
+    await updateDoc(doc(db, 'events', eventId), {
+      interestedCount: increment(-1),
+    });
+    await updateDoc(doc(db, 'users', userId), {
+      interestedEvents: arrayRemove(eventId),
+    });
+  } else {
+    // Add interest
+    await updateDoc(doc(db, 'events', eventId), {
+      interestedCount: increment(1),
+    });
+    await updateDoc(doc(db, 'users', userId), {
+      interestedEvents: arrayUnion(eventId),
+    });
+  }
+}
+
+export async function uploadEventImage(eventId: string, file: File) {
+  const timestamp = Date.now();
+  const extension = file.name.split('.').pop() || 'jpg';
+  const path = `events/${eventId}/${timestamp}.${extension}`;
+  const storageRef = ref(storage, path);
+
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  return url;
 }
 
 // ============================================
