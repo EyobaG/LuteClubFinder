@@ -48,6 +48,19 @@ export default function Header() {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
+            {(userData?.role === 'club_leader' || userData?.role === 'admin') && (
+              <Link
+                to="/leader"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                  ${
+                    location.pathname.startsWith('/leader')
+                      ? 'bg-indigo-50 text-indigo-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+              >
+                My Clubs
+              </Link>
+            )}
             {userData?.role === 'admin' && (
               <Link
                 to="/admin"
@@ -111,6 +124,20 @@ export default function Header() {
               </Link>
             ))}
             <div className="pt-3 border-t border-gray-100">
+              {(userData?.role === 'club_leader' || userData?.role === 'admin') && (
+                <Link
+                  to="/leader"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-3 py-2 rounded-lg text-base font-medium
+                    ${
+                      location.pathname.startsWith('/leader')
+                        ? 'bg-indigo-50 text-indigo-700'
+                        : 'text-gray-600 hover:bg-gray-50'
+                    }`}
+                >
+                  My Clubs
+                </Link>
+              )}
               {userData?.role === 'admin' && (
                 <Link
                   to="/admin"

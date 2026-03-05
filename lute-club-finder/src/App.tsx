@@ -32,6 +32,15 @@ import AdminAnnouncementEdit from './pages/admin/AdminAnnouncementEdit';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminAnalytics from './pages/admin/AdminAnalytics';
 
+// Leader Pages
+import LeaderLayout from './pages/leader/LeaderLayout';
+import LeaderDashboard from './pages/leader/LeaderDashboard';
+import LeaderClubEdit from './pages/leader/LeaderClubEdit';
+import LeaderEvents from './pages/leader/LeaderEvents';
+import LeaderEventEdit from './pages/leader/LeaderEventEdit';
+import LeaderAnnouncements from './pages/leader/LeaderAnnouncements';
+import LeaderAnnouncementEdit from './pages/leader/LeaderAnnouncementEdit';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -87,6 +96,20 @@ const router = createBrowserRouter([
           { path: 'announcements/:id/edit', element: <AdminAnnouncementEdit /> },
           { path: 'users', element: <AdminUsers /> },
           { path: 'analytics', element: <AdminAnalytics /> },
+        ],
+      },
+      {
+        path: 'leader',
+        element: <LeaderLayout />,
+        children: [
+          { index: true, element: <LeaderDashboard /> },
+          { path: 'clubs/:id/edit', element: <LeaderClubEdit /> },
+          { path: 'events', element: <LeaderEvents /> },
+          { path: 'events/new', element: <LeaderEventEdit /> },
+          { path: 'events/:id/edit', element: <LeaderEventEdit /> },
+          { path: 'announcements', element: <LeaderAnnouncements /> },
+          { path: 'announcements/new', element: <LeaderAnnouncementEdit /> },
+          { path: 'announcements/:id/edit', element: <LeaderAnnouncementEdit /> },
         ],
       },
       { path: '*', element: <NotFoundPage /> },

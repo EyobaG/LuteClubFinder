@@ -1,8 +1,8 @@
 # Lute Club Finder - Development Progress
 
 > **Last Updated**: March 4, 2026  
-> **Current Phase**: Phase 6 — COMPLETE ✅ | Next: Phase 7 (Club Leader Portal)  
-> **Overall Progress**: █████████████████░░░ 85%
+> **Current Phase**: Phase 7 — COMPLETE ✅ | Next: Phase 8 (Homepage & Navigation Polish)  
+> **Overall Progress**: ██████████████████░░ 90%
 
 ---
 
@@ -130,9 +130,9 @@
 
 | # | Task | Status | Date | Notes |
 |---|------|--------|------|-------|
-| 7.1 | Leader dashboard | ⬜ | — | |
-| 7.2 | Club edit (leader-scoped) | ⬜ | — | |
-| 7.3 | Leader event & announcement management | ⬜ | — | |
+| 7.1 | Leader dashboard | ✅ | Mar 4 | LeaderDashboard with stat cards (clubs, views, saves, events, announcements), quick actions (Create Event, Post Announcement), My Clubs grid with per-club stats and edit/view links. LeaderLayout sidebar (indigo-950 theme) with mobile drawer. LeaderRoute guard (club_leader + admin access). useLeader hook with useLeaderClubs, useLeaderEvents, useLeaderAnnouncements, useLeaderStats. |
+| 7.2 | Club edit (leader-scoped) | ✅ | Mar 4 | LeaderClubEdit form: leader can only edit descriptions, meeting schedule, social links, officers, images, tags, vibes, attributes, member count. Admin-only fields (name, category, status, featured, verified) hidden. Authorization check via clubLeaderOf. |
+| 7.3 | Leader event & announcement management | ✅ | Mar 4 | LeaderEvents list with search/status/type/club filters, delete confirmation. LeaderEventEdit create/edit with club dropdown scoped to leader's clubs. LeaderAnnouncements list with search/priority/club filters. LeaderAnnouncementEdit with type forced to "club". Header "My Clubs" nav link for club_leader + admin roles. Routes registered at /leader with nested children. |
 
 ---
 
@@ -193,6 +193,7 @@
 
 | Date | Change |
 |------|--------|
+| Mar 4, 2026 | **Phase 7 COMPLETE — Club Leader Portal.** Built full leader portal at `/leader` with indigo-themed sidebar layout. **9 new files**: LeaderRoute (auth guard for club_leader/admin), useLeader hook (4 query hooks: useLeaderClubs, useLeaderEvents, useLeaderAnnouncements, useLeaderStats with client-side filtering by clubLeaderOf), LeaderLayout (sidebar + mobile drawer), LeaderDashboard (5 stat cards, quick actions, My Clubs grid with per-club stats), LeaderClubEdit (scoped form hiding admin-only fields: name/category/status/featured/verified), LeaderEvents (table with search/status/type/club filters, delete dialog), LeaderEventEdit (create/edit with club dropdown restricted to leader's clubs), LeaderAnnouncements (table with search/priority/club filters, delete dialog), LeaderAnnouncementEdit (create/edit with type forced to "club"). Updated Header with "My Clubs" link for club_leader + admin roles (desktop + mobile). Registered 8 nested routes under /leader. Build passes with zero errors. |
 | Mar 4, 2026 | **Announcement detail page.** Created `AnnouncementDetailPage` at `/announcements/:id` with full content, image, type/priority/pinned badges, meta info (published date, audience, expiration, views), and "Posted By" club link for club-type announcements. Made `AnnouncementCard` clickable (wrapped in `<Link>`, removed inline expand/collapse, added hover shadow). Added `incrementAnnouncementViews` Firebase helper for view tracking on page load. Build passes (249 modules, zero errors). |
 | Mar 4, 2026 | **Seeded 19 sample announcements** (4 platform, 6 club, 4 news, 5 PLU spotlight; 5 pinned) via `migration/seed-announcements.js`. Also added two new announcement types — **News** and **PLU Spotlight** — alongside the existing Platform and Club types. Updated Announcement type definition, AnnouncementCard badge colors (news=emerald, spotlight=purple), AnnouncementForm zod schema & dropdown, AnnouncementsPage filter pills, and AdminAnnouncements filter/table badge rendering. |
 | Mar 4, 2026 | **Phase 6 COMPLETE.** Announcements System: added 7 Firebase announcement helpers (getAnnouncements with client-side filter/sort to avoid composite index issues, getAllAnnouncements, getAnnouncement, createAnnouncement, updateAnnouncement, deleteAnnouncement, uploadAnnouncementImage) + 6 React Query hooks. Built AnnouncementCard component (inline expand, priority/type badges, pin indicator, author, date, view count). AnnouncementForm (zod validation, type/club/audience/priority fields, pinned toggle, expiration date, image upload). AnnouncementsPage feed with debounced search, type filter pills, priority dropdown, sort, pinned section. AdminAnnouncements list with search/filter/delete + AdminAnnouncementEdit create/edit page. Added Announcements link to admin sidebar, 3 admin routes, "Post Announcement" quick action on dashboard. HomePage "Latest Announcements" section (3 items between Featured Clubs and Upcoming Events). Build passes with zero errors. |
