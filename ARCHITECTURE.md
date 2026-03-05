@@ -365,7 +365,7 @@ service cloud.firestore {
     
     // Announcements
     match /announcements/{announcementId} {
-      allow read: if isPLUEmail();
+      allow read: if true; // Public — shown on homepage
       allow create: if isPLUEmail() && 
                       (isAdmin() || 
                        isClubLeader(request.resource.data.clubId));
@@ -376,7 +376,7 @@ service cloud.firestore {
     
     // Events
     match /events/{eventId} {
-      allow read: if isPLUEmail();
+      allow read: if true; // Public — shown on homepage
       allow create: if isPLUEmail() && 
                       (isAdmin() || isClubLeader(request.resource.data.clubId));
       allow update, delete: if isAdmin() || 
