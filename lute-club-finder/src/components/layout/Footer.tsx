@@ -8,8 +8,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="col-span-1 sm:col-span-2">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl">🎵</span>
+            <div className="flex items-center mb-3">
+              <img src="/lute-club-finder.png" alt="LuteClubFinder logo" className="h-28 w-auto object-contain -mr-14" />
               <span className="text-lg font-bold text-white">
                 Lute<span className="text-amber-500">Club</span>Finder
               </span>

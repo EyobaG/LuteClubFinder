@@ -100,7 +100,7 @@ export default function LeaderDashboard() {
           </div>
         ) : !clubs || clubs.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-            <span className="text-4xl block mb-3">🎵</span>
+            <img src="/lute-club-finder.png" alt="LuteClubFinder logo" className="h-28 w-auto object-contain mx-auto mb-3" />
             <p className="text-gray-500">No clubs assigned to you yet.</p>
             <p className="text-sm text-gray-400 mt-1">
               Contact an admin to be assigned as a club leader.

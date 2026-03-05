@@ -104,7 +104,7 @@ export default function LoginPage() {
     <div className="min-h-[80vh] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <span className="text-4xl block mb-3">🎵</span>
+          <img src="/lute-club-finder.png" alt="LuteClubFinder logo" className="h-28 w-auto object-contain mx-auto mb-3" />
           <h1 className="text-2xl font-bold text-gray-900">
             {isSignUp ? 'Create your account' : 'Sign in to LuteClubFinder'}
           </h1>
