@@ -1,11 +1,13 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { RootLayout } from './components/layout';
 import { ProtectedRoute } from './components/auth';
-import { ToastProvider } from './components/ui';
+import { Toaster } from 'sonner';
+import { ErrorBoundary, PageLoader } from './components/ui';
 
-// Pages
+// Pages (eagerly loaded — student-facing)
 import HomePage from './pages/HomePage';
 import DiscoverPage from './pages/DiscoverPage';
 import ClubDetailPage from './pages/ClubDetailPage';
@@ -21,27 +23,31 @@ import NotFoundPage from './pages/NotFoundPage';
 import EventDetailPage from './pages/EventDetailPage';
 import AnnouncementDetailPage from './pages/AnnouncementDetailPage';
 
-// Admin Pages
-import AdminLayout from './pages/admin/AdminLayout';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminClubs from './pages/admin/AdminClubs';
-import AdminClubEdit from './pages/admin/AdminClubEdit';
-import AdminEvents from './pages/admin/AdminEvents';
-import AdminEventEdit from './pages/admin/AdminEventEdit';
-import AdminAnnouncements from './pages/admin/AdminAnnouncements';
-import AdminAnnouncementEdit from './pages/admin/AdminAnnouncementEdit';
-import AdminUsers from './pages/admin/AdminUsers';
-import AdminAnalytics from './pages/admin/AdminAnalytics';
+// Admin Pages (lazy-loaded)
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminClubs = lazy(() => import('./pages/admin/AdminClubs'));
+const AdminClubEdit = lazy(() => import('./pages/admin/AdminClubEdit'));
+const AdminEvents = lazy(() => import('./pages/admin/AdminEvents'));
+const AdminEventEdit = lazy(() => import('./pages/admin/AdminEventEdit'));
+const AdminAnnouncements = lazy(() => import('./pages/admin/AdminAnnouncements'));
+const AdminAnnouncementEdit = lazy(() => import('./pages/admin/AdminAnnouncementEdit'));
+const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
+const AdminAnalytics = lazy(() => import('./pages/admin/AdminAnalytics'));
 
-// Leader Pages
-import LeaderLayout from './pages/leader/LeaderLayout';
-import LeaderDashboard from './pages/leader/LeaderDashboard';
-import LeaderClubEdit from './pages/leader/LeaderClubEdit';
-import LeaderEvents from './pages/leader/LeaderEvents';
-import LeaderEventEdit from './pages/leader/LeaderEventEdit';
-import LeaderAnnouncements from './pages/leader/LeaderAnnouncements';
-import LeaderAnnouncementEdit from './pages/leader/LeaderAnnouncementEdit';
-import LeaderAnalytics from './pages/leader/LeaderAnalytics';
+// Leader Pages (lazy-loaded)
+const LeaderLayout = lazy(() => import('./pages/leader/LeaderLayout'));
+const LeaderDashboard = lazy(() => import('./pages/leader/LeaderDashboard'));
+const LeaderClubEdit = lazy(() => import('./pages/leader/LeaderClubEdit'));
+const LeaderEvents = lazy(() => import('./pages/leader/LeaderEvents'));
+const LeaderEventEdit = lazy(() => import('./pages/leader/LeaderEventEdit'));
+const LeaderAnnouncements = lazy(() => import('./pages/leader/LeaderAnnouncements'));
+const LeaderAnnouncementEdit = lazy(() => import('./pages/leader/LeaderAnnouncementEdit'));
+const LeaderAnalytics = lazy(() => import('./pages/leader/LeaderAnalytics'));
+
+function LazyPage({ children }: { children: React.ReactNode }) {
+  return <Suspense fallback={<PageLoader />}>{children}</Suspense>;
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +62,17 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: (
+      <RootLayout>
+        <ErrorBoundary>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Page Error</h2>
+            <p className="text-gray-500 mb-4">Something went wrong loading this page.</p>
+            <a href="/" className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700">Go Home</a>
+          </div>
+        </ErrorBoundary>
+      </RootLayout>
+    ),
     children: [
       { index: true, element: <HomePage /> },
       { path: 'discover', element: <DiscoverPage /> },
@@ -92,35 +109,35 @@ const router = createBrowserRouter([
       { path: 'login', element: <LoginPage /> },
       {
         path: 'admin',
-        element: <AdminLayout />,
+        element: <LazyPage><AdminLayout /></LazyPage>,
         children: [
-          { index: true, element: <AdminDashboard /> },
-          { path: 'clubs', element: <AdminClubs /> },
-          { path: 'clubs/new', element: <AdminClubEdit /> },
-          { path: 'clubs/:id/edit', element: <AdminClubEdit /> },
-          { path: 'events', element: <AdminEvents /> },
-          { path: 'events/new', element: <AdminEventEdit /> },
-          { path: 'events/:id/edit', element: <AdminEventEdit /> },
-          { path: 'announcements', element: <AdminAnnouncements /> },
-          { path: 'announcements/new', element: <AdminAnnouncementEdit /> },
-          { path: 'announcements/:id/edit', element: <AdminAnnouncementEdit /> },
-          { path: 'users', element: <AdminUsers /> },
-          { path: 'analytics', element: <AdminAnalytics /> },
+          { index: true, element: <LazyPage><AdminDashboard /></LazyPage> },
+          { path: 'clubs', element: <LazyPage><AdminClubs /></LazyPage> },
+          { path: 'clubs/new', element: <LazyPage><AdminClubEdit /></LazyPage> },
+          { path: 'clubs/:id/edit', element: <LazyPage><AdminClubEdit /></LazyPage> },
+          { path: 'events', element: <LazyPage><AdminEvents /></LazyPage> },
+          { path: 'events/new', element: <LazyPage><AdminEventEdit /></LazyPage> },
+          { path: 'events/:id/edit', element: <LazyPage><AdminEventEdit /></LazyPage> },
+          { path: 'announcements', element: <LazyPage><AdminAnnouncements /></LazyPage> },
+          { path: 'announcements/new', element: <LazyPage><AdminAnnouncementEdit /></LazyPage> },
+          { path: 'announcements/:id/edit', element: <LazyPage><AdminAnnouncementEdit /></LazyPage> },
+          { path: 'users', element: <LazyPage><AdminUsers /></LazyPage> },
+          { path: 'analytics', element: <LazyPage><AdminAnalytics /></LazyPage> },
         ],
       },
       {
         path: 'leader',
-        element: <LeaderLayout />,
+        element: <LazyPage><LeaderLayout /></LazyPage>,
         children: [
-          { index: true, element: <LeaderDashboard /> },
-          { path: 'clubs/:id/edit', element: <LeaderClubEdit /> },
-          { path: 'events', element: <LeaderEvents /> },
-          { path: 'events/new', element: <LeaderEventEdit /> },
-          { path: 'events/:id/edit', element: <LeaderEventEdit /> },
-          { path: 'announcements', element: <LeaderAnnouncements /> },
-          { path: 'announcements/new', element: <LeaderAnnouncementEdit /> },
-          { path: 'announcements/:id/edit', element: <LeaderAnnouncementEdit /> },
-          { path: 'analytics', element: <LeaderAnalytics /> },
+          { index: true, element: <LazyPage><LeaderDashboard /></LazyPage> },
+          { path: 'clubs/:id/edit', element: <LazyPage><LeaderClubEdit /></LazyPage> },
+          { path: 'events', element: <LazyPage><LeaderEvents /></LazyPage> },
+          { path: 'events/new', element: <LazyPage><LeaderEventEdit /></LazyPage> },
+          { path: 'events/:id/edit', element: <LazyPage><LeaderEventEdit /></LazyPage> },
+          { path: 'announcements', element: <LazyPage><LeaderAnnouncements /></LazyPage> },
+          { path: 'announcements/new', element: <LazyPage><LeaderAnnouncementEdit /></LazyPage> },
+          { path: 'announcements/:id/edit', element: <LazyPage><LeaderAnnouncementEdit /></LazyPage> },
+          { path: 'analytics', element: <LazyPage><LeaderAnalytics /></LazyPage> },
         ],
       },
       { path: '*', element: <NotFoundPage /> },
@@ -132,9 +149,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ToastProvider>
+        <Toaster position="bottom-right" richColors />
           <RouterProvider router={router} />
-        </ToastProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

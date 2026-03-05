@@ -22,7 +22,7 @@ const CATEGORY_ICONS: Record<ClubCategory, string> = {
 };
 
 export default function HomePage() {
-  const { data: upcomingEvents } = useUpcomingEvents(undefined, 6);
+  const { data: upcomingEvents } = useUpcomingEvents(undefined, 3);
   const { data: clubs } = useClubs({ featured: true, limitCount: 4 });
   const { data: announcements } = useAnnouncements({ limitCount: 3 });
   const { user, userData } = useAuth();

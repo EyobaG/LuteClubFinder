@@ -7,11 +7,11 @@ import {
   Badge,
   Input,
   Select,
-  LoadingSpinner,
+  SkeletonTableRows,
   Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell,
   ConfirmDialog,
 } from '../../components/ui';
-import { useToast } from '../../components/ui/Toast';
+import { toast } from 'sonner';
 import { formatEventDate } from '../../components/events';
 import type { ClubEvent } from '../../types';
 
@@ -45,7 +45,7 @@ export default function AdminEvents() {
   const { data: events, isLoading } = useAllEvents();
   const { data: clubs } = useAllClubs();
   const deleteEvent = useDeleteEvent();
-  const { addToast } = useToast();
+
 
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -93,11 +93,11 @@ export default function AdminEvents() {
     if (!deleteTarget) return;
     deleteEvent.mutate(deleteTarget.id, {
       onSuccess: () => {
-        addToast(`"${deleteTarget.title}" has been deleted`, 'success');
+        toast.success(`"${deleteTarget.title}" has been deleted`);
         setDeleteTarget(null);
       },
       onError: () => {
-        addToast('Failed to delete event', 'error');
+        toast.error('Failed to delete event');
       },
     });
   }
@@ -147,7 +147,7 @@ export default function AdminEvents() {
 
       {/* Table */}
       {isLoading ? (
-        <LoadingSpinner className="py-12" />
+        <SkeletonTableRows rows={5} cols={7} />
       ) : filteredEvents.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
           <p className="text-gray-500">No events found matching your filters.</p>

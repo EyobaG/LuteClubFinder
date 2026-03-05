@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useClubs } from '../hooks/useClubs';
 import { useSavedClubs } from '../hooks/useSavedClubs';
 import { ClubCard } from '../components/clubs';
-import { LoadingSpinner, Button } from '../components/ui';
+import { SkeletonCard, Button } from '../components/ui';
 import type { Club } from '../types';
 
 export default function SavedClubsPage() {
@@ -22,8 +22,10 @@ export default function SavedClubsPage() {
       <p className="text-gray-600 mb-8">Your bookmarked clubs in one place.</p>
 
       {isLoading ? (
-        <div className="flex items-center justify-center min-h-[40vh]">
-          <LoadingSpinner size="lg" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
       ) : savedClubs.length === 0 ? (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">

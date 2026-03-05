@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLeaderClubs, useLeaderStats } from '../../hooks/useLeader';
-import { LoadingSpinner, Badge } from '../../components/ui';
+import { SkeletonCard, Badge } from '../../components/ui';
 import { CATEGORY_COLORS } from '../../types';
 
 export default function LeaderDashboard() {
@@ -93,7 +93,11 @@ export default function LeaderDashboard() {
       <div>
         <h2 className="text-lg font-semibold text-gray-900 mb-4">My Clubs</h2>
         {isLoading ? (
-          <LoadingSpinner className="py-12" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
         ) : !clubs || clubs.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
             <span className="text-4xl block mb-3">🎵</span>
@@ -126,6 +130,8 @@ export default function LeaderDashboard() {
                     <img
                       src={club.logo}
                       alt=""
+                      loading="lazy"
+                      decoding="async"
                       className="h-10 w-10 rounded-lg object-cover ml-3 flex-shrink-0"
                     />
                   )}

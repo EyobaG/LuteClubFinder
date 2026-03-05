@@ -8,6 +8,7 @@ import { getClubMatches } from '../lib/quizMatcher';
 import { QuizLanding, QuizProgress, QuizQuestionCard, QuizResults } from '../components/quiz';
 import { PageLoader } from '../components/ui/LoadingSpinner';
 import Button from '../components/ui/Button';
+import { toast } from 'sonner';
 import type { UserPreferences, ClubMatch, QuizQuestion } from '../types';
 
 // ============================================
@@ -195,8 +196,10 @@ export default function QuizPage() {
       await submitQuizResults(user.uid, state.preferences, matchScores);
       await refreshUserData();
       dispatch({ type: 'MARK_SAVED' });
+      toast.success('Quiz results saved!');
     } catch (err) {
       console.error('Failed to save quiz results:', err);
+      toast.error('Failed to save quiz results');
     } finally {
       setSaving(false);
     }

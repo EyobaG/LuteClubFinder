@@ -6,11 +6,11 @@ import {
   Badge,
   Input,
   Select,
-  LoadingSpinner,
+  SkeletonTableRows,
   Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell,
   ConfirmDialog,
 } from '../../components/ui';
-import { useToast } from '../../components/ui/Toast';
+import { toast } from 'sonner';
 import { CATEGORIES } from '../../types';
 import type { Club, ClubCategory } from '../../types';
 
@@ -36,7 +36,7 @@ export default function AdminClubs() {
   const navigate = useNavigate();
   const { data: clubs, isLoading } = useAllClubs();
   const deleteClub = useDeleteClub();
-  const { addToast } = useToast();
+
 
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
@@ -71,11 +71,11 @@ export default function AdminClubs() {
     if (!deleteTarget) return;
     deleteClub.mutate(deleteTarget.id, {
       onSuccess: () => {
-        addToast(`"${deleteTarget.name}" has been deleted`, 'success');
+        toast.success(`"${deleteTarget.name}" has been deleted`);
         setDeleteTarget(null);
       },
       onError: () => {
-        addToast('Failed to delete club', 'error');
+        toast.error('Failed to delete club');
       },
     });
   }
@@ -120,7 +120,7 @@ export default function AdminClubs() {
 
       {/* Table */}
       {isLoading ? (
-        <LoadingSpinner className="py-12" />
+        <SkeletonTableRows rows={5} cols={5} />
       ) : filteredClubs.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
           <p className="text-gray-500">No clubs found matching your filters.</p>

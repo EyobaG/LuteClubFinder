@@ -37,7 +37,7 @@ export default function ClubCard({
             e.stopPropagation();
             onToggleSave(club.id);
           }}
-          className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-gray-100 transition-colors z-10"
+          className="absolute top-2 right-2 p-2.5 rounded-full hover:bg-gray-100 transition-colors z-10"
           aria-label={isSaved ? 'Unsave club' : 'Save club'}
         >
           {isSaved ? (

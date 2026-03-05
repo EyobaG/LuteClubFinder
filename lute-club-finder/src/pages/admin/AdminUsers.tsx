@@ -5,11 +5,11 @@ import {
   Badge,
   Input,
   Select,
-  LoadingSpinner,
+  SkeletonTableRows,
   Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell,
   ConfirmDialog,
 } from '../../components/ui';
-import { useToast } from '../../components/ui/Toast';
+import { toast } from 'sonner';
 import type { UserData } from '../../types';
 
 const ROLE_OPTIONS = [
@@ -47,7 +47,7 @@ export default function AdminUsers() {
   const updateRole = useUpdateUserRole();
   const assignLeader = useAssignClubLeader();
   const removeLeader = useRemoveClubLeader();
-  const { addToast } = useToast();
+
 
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
@@ -85,14 +85,13 @@ export default function AdminUsers() {
       { userId: roleChange.user.uid, role: roleChange.newRole as any },
       {
         onSuccess: () => {
-          addToast(
-            `${roleChange.user.displayName}'s role updated to ${roleChange.newRole}`,
-            'success'
+          toast.success(
+            `${roleChange.user.displayName}'s role updated to ${roleChange.newRole}`
           );
           setRoleChange(null);
         },
         onError: () => {
-          addToast('Failed to update user role', 'error');
+          toast.error('Failed to update user role');
         },
       }
     );
@@ -104,10 +103,10 @@ export default function AdminUsers() {
       { userId, clubId: assignClubId },
       {
         onSuccess: () => {
-          addToast('Club leader assigned', 'success');
+          toast.success('Club leader assigned');
           setAssignClubId('');
         },
-        onError: () => addToast('Failed to assign club leader', 'error'),
+        onError: () => toast.error('Failed to assign club leader'),
       }
     );
   }
@@ -116,8 +115,8 @@ export default function AdminUsers() {
     removeLeader.mutate(
       { userId, clubId },
       {
-        onSuccess: () => addToast('Club leadership removed', 'success'),
-        onError: () => addToast('Failed to remove club leadership', 'error'),
+        onSuccess: () => toast.success('Club leadership removed'),
+        onError: () => toast.error('Failed to remove club leadership'),
       }
     );
   }
@@ -155,7 +154,7 @@ export default function AdminUsers() {
 
       {/* Table */}
       {isLoading ? (
-        <LoadingSpinner className="py-12" />
+        <SkeletonTableRows rows={5} cols={5} />
       ) : filteredUsers.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
           <p className="text-gray-500">No users found.</p>

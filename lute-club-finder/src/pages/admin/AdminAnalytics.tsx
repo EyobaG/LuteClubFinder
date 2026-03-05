@@ -1,5 +1,5 @@
 import { useAnalyticsData } from '../../hooks/useAnalytics';
-import { Badge, LoadingSpinner } from '../../components/ui';
+import { Badge, SkeletonStatCards, SkeletonChartPanel } from '../../components/ui';
 import { CATEGORIES } from '../../types';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -31,7 +31,13 @@ export default function AdminAnalytics() {
   } = useAnalyticsData();
 
   if (isLoading) {
-    return <LoadingSpinner className="py-12" />;
+    return (
+      <div className="space-y-8">
+        <SkeletonStatCards count={4} />
+        <SkeletonChartPanel />
+        <SkeletonChartPanel />
+      </div>
+    );
   }
 
   const roleChartData = [
@@ -66,7 +72,7 @@ export default function AdminAnalytics() {
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={viewsByCategoryData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-                <XAxis dataKey="name" tick={{ fontSize: 12 }} interval={0} angle={-25} textAnchor="end" height={60} />
+                <XAxis dataKey="name" tick={{ fontSize: 11 }} interval="preserveStartEnd" angle={-25} textAnchor="end" height={60} />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Legend />
@@ -107,7 +113,7 @@ export default function AdminAnalytics() {
               <BarChart data={topViewedClubs.map((c) => ({ name: c.name.length > 22 ? c.name.slice(0, 20) + '…' : c.name, views: c.views || 0 }))} layout="vertical" margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
                 <XAxis type="number" tick={{ fontSize: 12 }} />
-                <YAxis dataKey="name" type="category" width={140} tick={{ fontSize: 11 }} />
+                <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Bar dataKey="views" fill="#6366f1" name="Views" radius={[0, 4, 4, 0]} />
               </BarChart>
@@ -123,7 +129,7 @@ export default function AdminAnalytics() {
               <BarChart data={topSavedClubs.map((c) => ({ name: c.name.length > 22 ? c.name.slice(0, 20) + '…' : c.name, saves: c.saves || 0 }))} layout="vertical" margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
                 <XAxis type="number" tick={{ fontSize: 12 }} />
-                <YAxis dataKey="name" type="category" width={140} tick={{ fontSize: 11 }} />
+                <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Bar dataKey="saves" fill="#f59e0b" name="Saves" radius={[0, 4, 4, 0]} />
               </BarChart>
@@ -144,7 +150,7 @@ export default function AdminAnalytics() {
                   data={clubsByCategory.map((c) => ({ name: c.label, value: c.count }))}
                   cx="50%"
                   cy="50%"
-                  outerRadius={100}
+                  outerRadius={80}
                   dataKey="value"
                   label={({ name, value }) => `${name} (${value})`}
                 >

@@ -16,10 +16,17 @@ export default function UserMenu() {
         setOpen(false);
       }
     }
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false);
+    }
     if (open) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
     }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
   }, [open]);
 
   // Close on navigation
@@ -63,7 +70,7 @@ export default function UserMenu() {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+        <div role="menu" className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
           {/* User info */}
           <div className="px-4 py-2 border-b border-gray-100">
             <p className="text-sm font-medium text-gray-900 truncate">
@@ -79,6 +86,7 @@ export default function UserMenu() {
               <Link
                 key={item.to}
                 to={item.to}
+                role="menuitem"
                 className={`block px-4 py-2 text-sm transition-colors ${
                   location.pathname === item.to ||
                   location.pathname.startsWith(item.to + '/')
@@ -94,6 +102,7 @@ export default function UserMenu() {
           <div className="border-t border-gray-100 mt-1">
             <button
               onClick={handleSignOut}
+              role="menuitem"
               className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
             >
               Sign Out

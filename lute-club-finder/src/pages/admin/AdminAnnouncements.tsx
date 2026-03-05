@@ -6,11 +6,11 @@ import {
   Badge,
   Input,
   Select,
-  LoadingSpinner,
+  SkeletonTableRows,
   Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell,
   ConfirmDialog,
 } from '../../components/ui';
-import { useToast } from '../../components/ui/Toast';
+import { toast } from 'sonner';
 import { formatAnnouncementDate } from '../../components/announcements';
 import type { Announcement } from '../../types';
 
@@ -39,7 +39,7 @@ export default function AdminAnnouncements() {
   const navigate = useNavigate();
   const { data: announcements, isLoading } = useAllAnnouncements();
   const deleteAnnouncement = useDeleteAnnouncement();
-  const { addToast } = useToast();
+
 
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
@@ -75,11 +75,11 @@ export default function AdminAnnouncements() {
     if (!deleteTarget) return;
     deleteAnnouncement.mutate(deleteTarget.id, {
       onSuccess: () => {
-        addToast(`"${deleteTarget.title}" has been deleted`, 'success');
+        toast.success(`"${deleteTarget.title}" has been deleted`);
         setDeleteTarget(null);
       },
       onError: () => {
-        addToast('Failed to delete announcement', 'error');
+        toast.error('Failed to delete announcement');
       },
     });
   }
@@ -124,7 +124,7 @@ export default function AdminAnnouncements() {
 
       {/* Table */}
       {isLoading ? (
-        <LoadingSpinner className="py-12" />
+        <SkeletonTableRows rows={5} cols={6} />
       ) : filteredAnnouncements.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
           <p className="text-gray-500">No announcements found matching your filters.</p>

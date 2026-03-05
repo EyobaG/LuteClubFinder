@@ -4,7 +4,7 @@ import { useClub, useClubs } from '../hooks/useClubs';
 import { useUpcomingEvents } from '../hooks/useEvents';
 import { useAuth } from '../context/AuthContext';
 import { incrementClubViews, trackClubView, saveClub, unsaveClub } from '../lib/firebase';
-import { Badge, Button, LoadingSpinner, Breadcrumb } from '../components/ui';
+import { Badge, Button, SkeletonDetailPage, Breadcrumb } from '../components/ui';
 import { ClubCard } from '../components/clubs';
 import { EventCard } from '../components/events';
 import { CATEGORIES, type Club, type ClubCategory } from '../types';
@@ -87,8 +87,8 @@ export default function ClubDetailPage() {
   // ---- Loading / Error states ----
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <LoadingSpinner size="lg" />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <SkeletonDetailPage />
       </div>
     );
   }

@@ -14,7 +14,7 @@ import {
   ImageUpload,
   LoadingSpinner,
 } from '../../components/ui';
-import { useToast } from '../../components/ui/Toast';
+import { toast } from 'sonner';
 import { CATEGORIES } from '../../types';
 
 // ============================================
@@ -127,7 +127,7 @@ export default function AdminClubEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isEditMode = !!id;
-  const { addToast } = useToast();
+
 
   const { data: existingClub, isLoading: loadingClub } = useClub(id || '');
   const createClub = useCreateClub();
@@ -277,14 +277,14 @@ export default function AdminClubEdit() {
     try {
       if (isEditMode && id) {
         await updateClub.mutateAsync({ clubId: id, data: clubData });
-        addToast(`"${formData.name}" updated successfully`, 'success');
+        toast.success(`"${formData.name}" updated successfully`);
       } else {
         await createClub.mutateAsync(clubData);
-        addToast(`"${formData.name}" created successfully`, 'success');
+        toast.success(`"${formData.name}" created successfully`);
       }
       navigate('/admin/clubs');
     } catch (err: any) {
-      addToast(err.message || 'Failed to save club', 'error');
+      toast.error(err.message || 'Failed to save club');
     }
   }
 

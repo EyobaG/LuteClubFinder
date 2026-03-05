@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useLeaderClubs, useLeaderEvents, useLeaderAnnouncements } from '../../hooks/useLeader';
 import { useAllUsers } from '../../hooks/useAdmin';
-import { LoadingSpinner, Badge } from '../../components/ui';
+import { SkeletonStatCards, SkeletonChartPanel, Badge } from '../../components/ui';
 import { CATEGORIES } from '../../types';
 import type { ClubCategory, UserData } from '../../types';
 import {
@@ -126,7 +126,13 @@ export default function LeaderAnalytics() {
   }, [users, clubs]);
 
   if (isLoading) {
-    return <LoadingSpinner className="py-12" />;
+    return (
+      <div className="space-y-8">
+        <SkeletonStatCards count={3} />
+        <SkeletonChartPanel />
+        <SkeletonChartPanel />
+      </div>
+    );
   }
 
   return (
@@ -217,7 +223,7 @@ export default function LeaderAnalytics() {
                 <BarChart data={quizMatchChartData} layout="vertical" margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
                   <XAxis type="number" tick={{ fontSize: 12 }} />
-                  <YAxis dataKey="name" type="category" width={130} tick={{ fontSize: 11 }} />
+                  <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 11 }} />
                   <Tooltip />
                   <Bar dataKey="matches" fill="#6366f1" name="Matches" radius={[0, 4, 4, 0]} />
                 </BarChart>
@@ -247,7 +253,7 @@ export default function LeaderAnalytics() {
                   data={eventsByType}
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
+                  outerRadius={70}
                   dataKey="value"
                   label={({ name, value }) => `${name} (${value})`}
                 >
@@ -281,7 +287,7 @@ export default function LeaderAnalytics() {
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
                 <XAxis type="number" tick={{ fontSize: 12 }} />
-                <YAxis dataKey="name" type="category" width={140} tick={{ fontSize: 11 }} />
+                <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="interested" fill="#10b981" name="Interested" radius={[0, 4, 4, 0]} />
@@ -314,7 +320,7 @@ export default function LeaderAnalytics() {
                     data={announcementsByType}
                     cx="50%"
                     cy="50%"
-                    outerRadius={80}
+                    outerRadius={70}
                     dataKey="value"
                     label={({ name, value }) => `${name} (${value})`}
                   >
@@ -346,7 +352,7 @@ export default function LeaderAnalytics() {
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
               <XAxis type="number" tick={{ fontSize: 12 }} />
-              <YAxis dataKey="name" type="category" width={140} tick={{ fontSize: 11 }} />
+              <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 11 }} />
               <Tooltip />
               <Bar dataKey="views" fill="#8b5cf6" name="Views" radius={[0, 4, 4, 0]} />
             </BarChart>

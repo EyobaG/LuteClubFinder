@@ -5,14 +5,14 @@ import { useAllClubs } from '../../hooks/useAdmin';
 import { useAuth } from '../../context/AuthContext';
 import { uploadEventImage } from '../../lib/firebase';
 import { LoadingSpinner } from '../../components/ui';
-import { useToast } from '../../components/ui/Toast';
+import { toast } from 'sonner';
 import EventForm from '../../components/events/EventForm';
 
 export default function AdminEventEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isEditMode = !!id;
-  const { addToast } = useToast();
+
   const { user } = useAuth();
 
   const { data: existingEvent, isLoading: loadingEvent } = useEvent(id);
@@ -27,15 +27,15 @@ export default function AdminEventEdit() {
     try {
       if (isEditMode && id) {
         await updateEvent.mutateAsync({ eventId: id, data: eventData });
-        addToast('Event updated successfully', 'success');
+        toast.success('Event updated successfully');
       } else {
         eventData.createdBy = user?.uid ?? '';
         await createEvent.mutateAsync(eventData);
-        addToast('Event created successfully', 'success');
+        toast.success('Event created successfully');
       }
       navigate('/admin/events');
     } catch (err) {
-      addToast(`Failed to ${isEditMode ? 'update' : 'create'} event`, 'error');
+      toast.error(`Failed to ${isEditMode ? 'update' : 'create'} event`);
     } finally {
       setSubmitting(false);
     }

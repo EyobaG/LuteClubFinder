@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAnnouncement } from '../hooks/useAnnouncements';
 import { incrementAnnouncementViews } from '../lib/firebase';
-import { Badge, LoadingSpinner, Button, Breadcrumb } from '../components/ui';
+import { Badge, SkeletonDetailPage, Button, Breadcrumb } from '../components/ui';
 
 const TYPE_STYLES: Record<string, { label: string; className: string }> = {
   platform: { label: 'Platform', className: 'bg-indigo-100 text-indigo-700' },
@@ -31,8 +31,8 @@ export default function AnnouncementDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <LoadingSpinner size="lg" />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <SkeletonDetailPage />
       </div>
     );
   }
@@ -112,6 +112,8 @@ export default function AnnouncementDetailPage() {
           <img
             src={announcement.imageUrl}
             alt={announcement.title}
+            loading="lazy"
+            decoding="async"
             className="w-full max-h-96 object-cover"
           />
         </div>

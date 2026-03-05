@@ -5,14 +5,14 @@ import { useLeaderClubs } from '../../hooks/useLeader';
 import { useAuth } from '../../context/AuthContext';
 import { uploadAnnouncementImage } from '../../lib/firebase';
 import { LoadingSpinner } from '../../components/ui';
-import { useToast } from '../../components/ui/Toast';
+import { toast } from 'sonner';
 import { AnnouncementForm } from '../../components/announcements';
 
 export default function LeaderAnnouncementEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isEditMode = !!id;
-  const { addToast } = useToast();
+
   const { user, userData } = useAuth();
 
   const { data: existingAnnouncement, isLoading: loadingAnnouncement } = useAnnouncement(id);
@@ -37,16 +37,16 @@ export default function LeaderAnnouncementEdit() {
 
       if (isEditMode && id) {
         await updateAnnouncement.mutateAsync({ announcementId: id, data: announcementData });
-        addToast('Announcement updated successfully', 'success');
+        toast.success('Announcement updated successfully');
       } else {
         announcementData.authorId = user?.uid ?? '';
         announcementData.authorName = userData?.displayName ?? user?.displayName ?? 'Club Leader';
         await createAnnouncement.mutateAsync(announcementData);
-        addToast('Announcement posted successfully', 'success');
+        toast.success('Announcement posted successfully');
       }
       navigate('/leader/announcements');
     } catch {
-      addToast(`Failed to ${isEditMode ? 'update' : 'create'} announcement`, 'error');
+      toast.error(`Failed to ${isEditMode ? 'update' : 'create'} announcement`);
     } finally {
       setSubmitting(false);
     }

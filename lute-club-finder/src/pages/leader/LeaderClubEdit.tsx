@@ -15,7 +15,7 @@ import {
   ImageUpload,
   LoadingSpinner,
 } from '../../components/ui';
-import { useToast } from '../../components/ui/Toast';
+import { toast } from 'sonner';
 
 // ============================================
 // Zod Schema — leader version (no admin-only fields)
@@ -108,7 +108,7 @@ const GROUP_SIZE_OPTIONS = [
 export default function LeaderClubEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { addToast } = useToast();
+
   const { userData } = useAuth();
 
   // Verify this leader owns this club
@@ -248,10 +248,10 @@ export default function LeaderClubEdit() {
 
     try {
       await updateClub.mutateAsync({ clubId: id, data: clubData });
-      addToast('Club updated successfully', 'success');
+      toast.success('Club updated successfully');
       navigate('/leader');
     } catch (err: any) {
-      addToast(err.message || 'Failed to update club', 'error');
+      toast.error(err.message || 'Failed to update club');
     }
   }
 

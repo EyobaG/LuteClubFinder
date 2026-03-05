@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAdminStats } from '../../hooks/useAdmin';
-import { LoadingSpinner } from '../../components/ui';
+import { SkeletonStatCards } from '../../components/ui';
 
 const statCards = [
   { key: 'totalClubs' as const, label: 'Total Clubs', icon: '🎭', color: 'bg-amber-50 text-amber-700' },
@@ -21,7 +21,7 @@ export default function AdminDashboard() {
 
       {/* Stat Cards */}
       {isLoading ? (
-        <LoadingSpinner className="py-12" />
+        <SkeletonStatCards count={4} />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {statCards.map((card) => (

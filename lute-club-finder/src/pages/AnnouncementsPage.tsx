@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useAnnouncements } from '../hooks/useAnnouncements';
 import { AnnouncementCard } from '../components/announcements';
-import { Input, Select, LoadingSpinner } from '../components/ui';
+import { Input, Select, SkeletonCard } from '../components/ui';
 import type { Announcement } from '../types';
 
 const TYPE_PILLS = [
@@ -126,7 +126,11 @@ export default function AnnouncementsPage() {
 
       {/* Content */}
       {isLoading ? (
-        <LoadingSpinner className="py-12" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
       ) : (filtered.pinned.length === 0 && filtered.unpinned.length === 0) ? (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
           <span className="text-4xl block mb-4">📢</span>

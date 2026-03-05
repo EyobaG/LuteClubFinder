@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useComfortZone } from '../hooks/useComfortZone';
 import { useSavedClubs } from '../hooks/useSavedClubs';
-import { Badge, Button, LoadingSpinner, Breadcrumb } from '../components/ui';
+import { Badge, Button, SkeletonCard, Breadcrumb } from '../components/ui';
 import { CATEGORIES } from '../types';
 
 export default function ComfortZonePage() {
@@ -29,8 +29,12 @@ export default function ComfortZonePage() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center py-20">
-        <LoadingSpinner size="lg" />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="space-y-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
       </div>
     );
   }

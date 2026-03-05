@@ -83,6 +83,8 @@ export default function AnnouncementCard({ announcement }: AnnouncementCardProps
             <img
               src={announcement.imageUrl}
               alt={announcement.title}
+              loading="lazy"
+              decoding="async"
               className="w-full h-40 object-cover"
             />
           </div>

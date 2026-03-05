@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { updateUserData } from '../lib/firebase';
 import Button from '../components/ui/Button';
@@ -34,8 +35,10 @@ export default function ProfilePage() {
       await updateUserData(user.uid, { displayName: displayName.trim() });
       await refreshUserData();
       setEditingName(false);
+      toast.success('Name updated');
     } catch (err) {
       console.error('Failed to update name:', err);
+      toast.error('Failed to update name');
     } finally {
       setSaving(false);
     }

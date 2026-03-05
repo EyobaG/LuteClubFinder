@@ -3,8 +3,9 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useEvent, useToggleEventInterest } from '../hooks/useEvents';
 import { useAuth } from '../context/AuthContext';
 import { incrementEventViews } from '../lib/firebase';
-import { Badge, Button, LoadingSpinner, Breadcrumb } from '../components/ui';
+import { Badge, Button, SkeletonDetailPage, Breadcrumb } from '../components/ui';
 import { formatEventTime } from '../components/events';
+import { toast } from 'sonner';
 import type { EventType } from '../types';
 
 const EVENT_TYPE_LABELS: Record<EventType, string> = {
@@ -49,15 +50,17 @@ export default function EventDetailPage() {
     try {
       await toggleInterest.mutateAsync({ eventId: id, userId: user.uid, isInterested });
       await refreshUserData();
+      toast.success(isInterested ? 'Removed from interested' : 'Marked as interested');
     } catch (err) {
       console.error('Failed to toggle interest:', err);
+      toast.error('Failed to update interest');
     }
   }
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <LoadingSpinner size="lg" />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <SkeletonDetailPage />
       </div>
     );
   }

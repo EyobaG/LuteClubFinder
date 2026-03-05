@@ -1,4 +1,5 @@
 import { useMemo, useCallback } from 'react';
+import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { saveClub, unsaveClub } from '../lib/firebase';
 
@@ -26,6 +27,7 @@ export function useSavedClubs() {
         await refreshUserData();
       } catch (err) {
         console.error('Failed to toggle save:', err);
+        toast.error('Failed to update saved clubs');
       }
     },
     [user, savedSet, refreshUserData]

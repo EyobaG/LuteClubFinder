@@ -164,7 +164,7 @@ export default function DiscoverPage() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setSelectedCategory('all')}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               selectedCategory === 'all'
                 ? 'bg-amber-600 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -180,7 +180,7 @@ export default function DiscoverPage() {
                   selectedCategory === cat.value ? 'all' : cat.value
                 )
               }
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 selectedCategory === cat.value
                   ? 'bg-amber-600 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
