@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useEvent, useToggleEventInterest } from '../hooks/useEvents';
 import { useAuth } from '../context/AuthContext';
 import { incrementEventViews } from '../lib/firebase';
+import { getGoogleCalendarLink } from '../lib/calendar';
 import { Badge, Button, SkeletonDetailPage, Breadcrumb } from '../components/ui';
 import { formatEventTime } from '../components/events';
 import { toast } from 'sonner';
@@ -54,6 +55,17 @@ export default function EventDetailPage() {
     } catch (err) {
       console.error('Failed to toggle interest:', err);
       toast.error('Failed to update interest');
+    }
+  }
+
+  function handleAddToCalendar() {
+    if (!user) {
+      toast.error('Please sign in to add events to your calendar.');
+      navigate('/login');
+      return;
+    }
+    if (event) {
+      window.open(getGoogleCalendarLink(event), '_blank', 'noopener');
     }
   }
 
@@ -134,12 +146,27 @@ export default function EventDetailPage() {
 
       {/* ===== Date & Time ===== */}
       <section className="bg-amber-50 rounded-xl p-5 mb-8">
-        <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-          <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-          </svg>
-          Date & Time
-        </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
+          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-2 sm:mb-0">
+            <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+            </svg>
+            Date & Time
+          </h2>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleAddToCalendar}
+            className="px-2 py-1 text-xs gap-1 border border-gray-200 hover:bg-gray-100"
+            style={{ minHeight: 0, height: '28px', lineHeight: '1.1' }}
+          >
+            <svg className="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <span className="ml-1">Add to Calendar</span>
+          </Button>
+        </div>
+        {/* ...existing code... */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
           <div>
             <span className="font-medium text-gray-700">Date:</span>{' '}
