@@ -18,7 +18,7 @@ export default function Header() {
   const { user, userData } = useAuth();
 
   return (
-    <header className="bg-plu-black sticky top-0 z-50 border-b-2 border-plu-gold">
+    <header className="bg-[#000000] sticky top-0 z-50 border-b-2 border-plu-gold">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -104,7 +104,7 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <nav aria-label="Mobile navigation" className="md:hidden border-t border-plu-gold/30 bg-plu-black">
+        <nav aria-label="Mobile navigation" className="md:hidden border-t border-plu-gold/30 bg-[#000000]">
           <div className="px-4 py-3 space-y-1">
             {navLinks.map((link) => (
               <Link
