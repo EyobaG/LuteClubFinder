@@ -30,10 +30,10 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-amber-50 via-white to-amber-50">
+      <section className="bg-gradient-to-br from-plu-gold-light via-white to-plu-gold-light/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-            Find Your <span className="text-amber-600">Perfect Club</span>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-plu-black mb-6 tracking-tight">
+            Find Your <span className="text-plu-gold-deep">Perfect Club</span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-10">
             Discover 55+ campus clubs at Pacific Lutheran University through
@@ -62,10 +62,10 @@ export default function HomePage() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center"
+              className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center border-t-4 border-t-plu-gold"
             >
-              <div className="text-2xl font-bold text-amber-600">{stat.value}</div>
-              <div className="text-sm text-gray-500 mt-1">{stat.label}</div>
+              <div className="text-2xl font-extrabold text-plu-black">{stat.value}</div>
+              <div className="text-sm text-gray-500 mt-1 font-medium">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -74,7 +74,7 @@ export default function HomePage() {
       {/* Browse by Category */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Browse by Category</h2>
+          <h2 className="text-2xl font-extrabold text-plu-black mb-2">Browse by Category</h2>
           <p className="text-gray-600">Explore clubs organized by interest area</p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -84,7 +84,7 @@ export default function HomePage() {
               <Link
                 key={cat.value}
                 to={`/discover?category=${cat.value}`}
-                className={`group flex flex-col items-center gap-2 rounded-xl border border-gray-200 p-5 transition-all hover:shadow-md hover:scale-[1.03] ${colors}`}
+                className={`group flex flex-col items-center gap-2 rounded-xl border border-gray-200 p-5 transition-all hover:shadow-md hover:scale-[1.03] hover:border-plu-gold/50 ${colors}`}
               >
                 <span className="text-3xl">{CATEGORY_ICONS[cat.value]}</span>
                 <span className="text-sm font-semibold">{cat.label}</span>
@@ -97,8 +97,8 @@ export default function HomePage() {
       {/* Featured Clubs */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Featured Clubs</h2>
-          <Link to="/discover" className="text-sm text-amber-600 hover:text-amber-700 font-medium">
+          <h2 className="text-2xl font-extrabold text-plu-black">Featured Clubs</h2>
+          <Link to="/discover" className="text-sm text-plu-gold-deep hover:text-plu-black font-semibold transition-colors">
             View All →
           </Link>
         </div>
@@ -117,8 +117,8 @@ export default function HomePage() {
       {announcements && announcements.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Latest Announcements</h2>
-            <Link to="/announcements" className="text-sm text-amber-600 hover:text-amber-700 font-medium">
+            <h2 className="text-2xl font-extrabold text-plu-black">Latest Announcements</h2>
+            <Link to="/announcements" className="text-sm text-plu-gold-deep hover:text-plu-black font-semibold transition-colors">
               View All →
             </Link>
           </div>
@@ -133,8 +133,8 @@ export default function HomePage() {
       {/* Upcoming Events */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Upcoming Events</h2>
-          <Link to="/events" className="text-sm text-amber-600 hover:text-amber-700 font-medium">
+          <h2 className="text-2xl font-extrabold text-plu-black">Upcoming Events</h2>
+          <Link to="/events" className="text-sm text-plu-gold-deep hover:text-plu-black font-semibold transition-colors">
             View All →
           </Link>
         </div>
@@ -152,16 +152,19 @@ export default function HomePage() {
       {/* Out of Comfort Zone CTA */}
       {user && userData?.quizCompleted && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-          <div className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl p-8 sm:p-12 text-center text-white">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3">
+          <div className="bg-plu-black rounded-2xl p-8 sm:p-12 text-center text-white border border-plu-gold/20">
+            <div className="inline-block px-3 py-1 rounded-full bg-plu-gold/15 text-plu-gold text-xs font-bold uppercase tracking-widest mb-4">
+              Personalized for You
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold mb-3">
               Step Outside Your Comfort Zone
             </h2>
-            <p className="text-purple-100 max-w-xl mx-auto mb-6">
+            <p className="text-gray-300 max-w-xl mx-auto mb-6">
               Discover clubs you'd never expect to love. Our algorithm finds
               compatible-but-different clubs to broaden your horizons.
             </p>
             <Link to="/comfort-zone">
-              <button className="inline-flex items-center justify-center rounded-lg font-medium px-6 py-3 text-lg bg-white text-purple-700 hover:bg-purple-50 transition-colors duration-200">
+              <button className="inline-flex items-center justify-center rounded-lg font-bold px-6 py-3 text-lg bg-plu-gold text-plu-black hover:bg-plu-gold-deep transition-colors duration-200">
                 Explore Recommendations
               </button>
             </Link>

@@ -1,28 +1,48 @@
 @import "tailwindcss";
 
-/* ---- Quiz slide-in animation ---- */
+/* ── PLU Brand Theme ───────────────────────────────────────────────── */
+@theme {
+  /* PLU Official Colors */
+  --color-plu-gold:       #FFCC33;
+  --color-plu-gold-deep:  #E6A800;
+  --color-plu-gold-light: #FFF8D6;
+  --color-plu-black:      #231F20;
+  --color-plu-gray:       #E5E5E5;
+  --color-plu-dark-gray:  #4A4747;
+  --color-plu-green:      #2D6A4F;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ── Quiz slide-in animation ───────────────────────────────────────── */
 @keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 .animate-fadeSlideIn {
   animation: fadeSlideIn 0.35s ease-out;
 }
 
-/* Reset body for full-page app layout */
+/* ── Base styles ───────────────────────────────────────────────────── */
+html {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
 }
 
-/* ---- Reduced motion preference ---- */
+/* ── PLU dashed divider motif ──────────────────────────────────────── */
+.plu-divider {
+  border: none;
+  border-top: 2px dashed #FFCC33;
+  opacity: 0.5;
+}
+
+/* ── Reduced motion ────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -32,8 +52,8 @@ body {
   }
 }
 
-/* ---- Focus-visible ring for keyboard users ---- */
+/* ── Focus-visible ring — PLU gold ────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #d97706;
+  outline: 2px solid #FFCC33;
   outline-offset: 2px;
 }

@@ -8,11 +8,15 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<string, string> = {
-  primary: 'bg-amber-600 text-white hover:bg-amber-700 focus:ring-amber-500',
-  secondary: 'bg-gray-800 text-white hover:bg-gray-900 focus:ring-gray-500',
-  outline: 'border-2 border-amber-600 text-amber-600 hover:bg-amber-50 focus:ring-amber-500',
-  ghost: 'text-gray-600 hover:bg-gray-100 focus:ring-gray-500',
-  danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+  // PLU gold background, black text — bold and on-brand
+  primary:   'bg-plu-gold text-plu-black font-bold hover:bg-plu-gold-deep focus:ring-plu-gold',
+  // PLU black background, white text
+  secondary: 'bg-plu-black text-white font-semibold hover:bg-plu-dark-gray focus:ring-plu-black',
+  // Gold border, black text; fills gold on hover
+  outline:   'border-2 border-plu-gold text-plu-black font-semibold hover:bg-plu-gold focus:ring-plu-gold',
+  // Subtle ghost — dark text, light hover
+  ghost:     'text-plu-black font-medium hover:bg-plu-gray focus:ring-gray-400',
+  danger:    'bg-red-600 text-white font-semibold hover:bg-red-700 focus:ring-red-500',
 };
 
 const sizeStyles: Record<string, string> = {
@@ -33,7 +37,7 @@ export default function Button({
   return (
     <button
       className={`
-        inline-flex items-center justify-center rounded-lg font-medium
+        inline-flex items-center justify-center rounded-lg
         transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
         disabled:opacity-50 disabled:cursor-not-allowed
         ${variantStyles[variant]}

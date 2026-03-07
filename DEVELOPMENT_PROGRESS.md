@@ -1,18 +1,8 @@
 # Lute Club Finder - Development Progress
 
-> **Last Updated**: March 6, 2026  
-> **Current Phase**: Phase 11 — COMPLETE ✅ | Next: Phase 12 (Deployment & Launch)  
+> **Last Updated**: March 6, 2026
+> **Current Phase**: Phase 11 — COMPLETE ✅ | Next: Phase 12 (Deployment & Launch)
 > **Overall Progress**: ████████████████████ 100%
-
----
-
-## Recent UI Improvements
-
-| Date | Change |
-|------|--------|
-| Mar 6, 2026 | Updated footer to PLU gold/black theme, improved copyright bar, and made all footer section headings gold with white list items. |
-| Mar 6, 2026 | Footer description text changed to white for better contrast. |
-| Mar 6, 2026 | UI components and layout now match Pacific Lutheran University branding. |
 
 ---
 
@@ -209,6 +199,7 @@
 
 | Date | Change |
 |------|--------|
+| Mar 6, 2026 | **PLU Brand Theme — UI overhaul.** Applied Pacific Lutheran University's official color palette and typography across the entire app. **`index.html`**: added Inter Google Font (400–900 weights), updated page title to "LuteClubFinder — Pacific Lutheran University". **`index.css`**: added Tailwind v4 `@theme` block with PLU custom colors (`plu-gold` #FFCC33, `plu-gold-deep` #E6A800, `plu-gold-light` #FFF8D6, `plu-black` #231F20, `plu-gray` #E5E5E5, `plu-dark-gray`, `plu-green`); set Inter as default font family; updated focus-visible ring to PLU gold; added `.plu-divider` dashed gold line utility. **`Header.tsx`**: PLU black background with 2px gold bottom border, gold active/hover nav links on dark, white logo text with gold "Club" span, gold mobile menu accents. **`Footer.tsx`**: PLU black background, gold top accent border, gold column headings (uppercase/tracked), dashed gold divider before copyright, "Go Lutes!" tagline, hover links transition to gold. **`Button.tsx`**: primary → gold bg + PLU black bold text; secondary → PLU black bg + white; outline → gold border fills gold on hover; ghost → PLU gray hover. **`Badge.tsx`**: default → PLU gray; warning → gold tint. **`Card.tsx`**: hoverable cards gain gold border glow. **`HomePage.tsx`**: hero gradient uses `plu-gold-light`, accent text swapped to `plu-gold-deep`, stat cards get gold top-border accent, all section "View All" links use gold, Comfort Zone CTA redesigned as PLU black card with gold accents. **6 files modified**. |
 | Mar 5, 2026 | **Homepage: limit upcoming events to 3.** Reduced `useUpcomingEvents` limit on HomePage from 6 to 3 for a cleaner layout. |
 | Mar 5, 2026 | **Phase 11 COMPLETE — UI/UX Polish & Performance.** Installed **sonner** toast library, replacing custom Toast system (14 files, 57 import/call replacements). Added toast notifications to user-facing mutations (save/unsave club, event interest, quiz results, profile update). Created **ErrorBoundary** (class component with retry), **ErrorState** (reusable query error display), added `errorElement` on root route. Built **7 skeleton primitives** (SkeletonLine, SkeletonCircle, SkeletonCard, SkeletonDetailPage, SkeletonTableRows, SkeletonStatCards, SkeletonChartPanel) and replaced `<LoadingSpinner>` across 16 pages (3 detail, 3 list, 4 admin, 2 leader dashboards, 4 admin/leader table pages). **Performance**: lazy-loaded 16 admin/leader components via `React.lazy()` + `Suspense`, added `loading="lazy"` + `decoding="async"` to all `<img>` tags, configured Vite manual chunks (vendor-react, vendor-firebase, vendor-charts). **Mobile responsiveness**: 44px touch targets on Button sm/md + ClubCard save button, enlarged DiscoverPage filter pills, reduced chart YAxis widths and pie outerRadius for mobile, `interval="preserveStartEnd"` on bar chart XAxis. **WCAG AA accessibility**: skip-to-content link, `<nav aria-label>` on desktop/mobile nav, `role="contentinfo"` on footer, scroll-to-top + focus reset on route change, Escape key closes UserMenu, `role="menu"`/`role="menuitem"` on dropdown, `aria-invalid` + `aria-describedby` on Input/Select error states, `role="alert"` on error messages, `prefers-reduced-motion: reduce` media query, `:focus-visible` amber-600 outline ring. Deleted deprecated `Toast.tsx`. **3 new files**, **32 modified files**, **1 deleted file**. Build passes with zero errors. |
 | Mar 5, 2026 | **Post-Phase 10 analytics fixes.** (1) **Enhanced LeaderAnalytics** to match AdminAnalytics chart richness: expanded from 4 to 6 stat cards (added event views, event interest, announcement views), added events by type PieChart with summary stats, announcements by type PieChart with summary stats, top events horizontal BarChart (interested + views), top announcements horizontal BarChart, quiz analytics section with stats + horizontal BarChart for match frequency. Uses `ChartPanel` + `StatCard` helper components matching admin styling. (2) **Fixed Users by Role pie chart overlap** — labels overlapped when slices had 0 values. Removed inline labels (legend below already shows counts). Filtered zero-value roles from chart data. (3) **Fixed Club Leaders showing 0** — admin user who also leads clubs was only counted as Admin due to mutually-exclusive counting. Switched to non-exclusive counting (users with `clubLeaderOf` entries counted as Club Leaders regardless of role field). Replaced PieChart with BarChart since roles can overlap. |

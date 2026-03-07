@@ -18,14 +18,14 @@ export default function Header() {
   const { user, userData } = useAuth();
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-plu-black sticky top-0 z-50 border-b-2 border-plu-gold">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img src="/lute-club-finder.png" alt="LuteClubFinder logo" className="h-28 w-auto object-contain -mr-14" />
-            <span className="text-xl font-bold text-gray-900">
-              Lute<span className="text-amber-600">Club</span>Finder
+            <span className="text-xl font-extrabold text-white tracking-tight">
+              Lute<span className="text-plu-gold">Club</span>Finder
             </span>
           </Link>
 
@@ -35,11 +35,11 @@ export default function Header() {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                className={`px-3 py-2 rounded-lg text-sm font-semibold transition-colors
                   ${
                     location.pathname === link.to
-                      ? 'bg-amber-50 text-amber-700'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                      ? 'bg-plu-gold/15 text-plu-gold'
+                      : 'text-gray-300 hover:text-plu-gold hover:bg-white/5'
                   }`}
               >
                 {link.label}
@@ -52,11 +52,11 @@ export default function Header() {
             {(userData?.role === 'club_leader' || userData?.role === 'admin') && (
               <Link
                 to="/leader"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                className={`px-3 py-2 rounded-lg text-sm font-semibold transition-colors
                   ${
                     location.pathname.startsWith('/leader')
-                      ? 'bg-indigo-50 text-indigo-700'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                      ? 'bg-plu-gold/15 text-plu-gold'
+                      : 'text-gray-300 hover:text-plu-gold hover:bg-white/5'
                   }`}
               >
                 My Clubs
@@ -65,11 +65,11 @@ export default function Header() {
             {userData?.role === 'admin' && (
               <Link
                 to="/admin"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                className={`px-3 py-2 rounded-lg text-sm font-semibold transition-colors
                   ${
                     location.pathname.startsWith('/admin')
-                      ? 'bg-amber-50 text-amber-700'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                      ? 'bg-plu-gold/15 text-plu-gold'
+                      : 'text-gray-300 hover:text-plu-gold hover:bg-white/5'
                   }`}
               >
                 Admin
@@ -86,7 +86,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100"
+            className="md:hidden p-2 rounded-lg text-gray-300 hover:text-plu-gold hover:bg-white/10 transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileMenuOpen}
@@ -104,33 +104,33 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <nav aria-label="Mobile navigation" className="md:hidden border-t border-gray-200 bg-white">
+        <nav aria-label="Mobile navigation" className="md:hidden border-t border-plu-gold/30 bg-plu-black">
           <div className="px-4 py-3 space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block px-3 py-2 rounded-lg text-base font-medium
+                className={`block px-3 py-2 rounded-lg text-base font-semibold transition-colors
                   ${
                     location.pathname === link.to
-                      ? 'bg-amber-50 text-amber-700'
-                      : 'text-gray-600 hover:bg-gray-50'
+                      ? 'bg-plu-gold/15 text-plu-gold'
+                      : 'text-gray-300 hover:text-plu-gold hover:bg-white/5'
                   }`}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="pt-3 border-t border-gray-100">
+            <div className="pt-3 border-t border-plu-gold/20">
               {(userData?.role === 'club_leader' || userData?.role === 'admin') && (
                 <Link
                   to="/leader"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-lg text-base font-medium
+                  className={`block px-3 py-2 rounded-lg text-base font-semibold transition-colors
                     ${
                       location.pathname.startsWith('/leader')
-                        ? 'bg-indigo-50 text-indigo-700'
-                        : 'text-gray-600 hover:bg-gray-50'
+                        ? 'bg-plu-gold/15 text-plu-gold'
+                        : 'text-gray-300 hover:text-plu-gold hover:bg-white/5'
                     }`}
                 >
                   My Clubs
@@ -140,11 +140,11 @@ export default function Header() {
                 <Link
                   to="/admin"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-lg text-base font-medium
+                  className={`block px-3 py-2 rounded-lg text-base font-semibold transition-colors
                     ${
                       location.pathname.startsWith('/admin')
-                        ? 'bg-amber-50 text-amber-700'
-                        : 'text-gray-600 hover:bg-gray-50'
+                        ? 'bg-plu-gold/15 text-plu-gold'
+                        : 'text-gray-300 hover:text-plu-gold hover:bg-white/5'
                     }`}
                 >
                   Admin
@@ -154,13 +154,13 @@ export default function Header() {
                 <Link
                   to="/profile"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2 text-base font-medium text-gray-600"
+                  className="block px-3 py-2 text-base font-semibold text-gray-300 hover:text-plu-gold"
                 >
                   Profile
                 </Link>
               ) : (
                 <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full" size="sm">
+                  <Button className="w-full mt-2" size="sm">
                     Sign In
                   </Button>
                 </Link>
