@@ -1,8 +1,8 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useClubs } from '../hooks/useClubs';
 import { useAuth } from '../context/AuthContext';
-import { saveClub, unsaveClub } from '../lib/firebase';
+import { useSavedClubs } from '../hooks/useSavedClubs';
 import { ClubCard } from '../components/clubs';
 import { Input, Badge } from '../components/ui';
 import { CATEGORIES, type Club, type ClubCategory } from '../types';
@@ -10,7 +10,8 @@ import { CATEGORIES, type Club, type ClubCategory } from '../types';
 type SortOption = 'a-z' | 'z-a' | 'most-saved' | 'most-viewed';
 
 export default function DiscoverPage() {
-  const { user, userData, refreshUserData } = useAuth();
+  const { user } = useAuth();
+  const { savedSet, toggleSave } = useSavedClubs();
   const { data: clubs, isLoading, error } = useClubs();
   const [searchParams] = useSearchParams();
 
@@ -75,28 +76,6 @@ export default function DiscoverPage() {
     return result;
   }, [clubs, debouncedSearch, selectedCategory, sortBy]);
 
-  // Save / unsave handler
-  const savedSet = useMemo(
-    () => new Set<string>(userData?.savedClubs ?? []),
-    [userData?.savedClubs]
-  );
-
-  const handleToggleSave = useCallback(
-    async (clubId: string) => {
-      if (!user) return; // guard; login prompt handled at UI layer
-      try {
-        if (savedSet.has(clubId)) {
-          await unsaveClub(user.uid, clubId);
-        } else {
-          await saveClub(user.uid, clubId);
-        }
-        await refreshUserData();
-      } catch (err) {
-        console.error('Failed to toggle save:', err);
-      }
-    },
-    [user, savedSet, refreshUserData]
-  );
 
   const resetFilters = () => {
     setSearchTerm('');
@@ -255,7 +234,7 @@ export default function DiscoverPage() {
               key={club.id}
               club={club}
               isSaved={savedSet.has(club.id)}
-              onToggleSave={user ? handleToggleSave : undefined}
+              onToggleSave={user ? toggleSave : undefined}
               hideSave={!user}
             />
           ))}
