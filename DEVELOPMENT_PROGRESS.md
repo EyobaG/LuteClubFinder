@@ -1,7 +1,7 @@
 # Lute Club Finder - Development Progress
 
-> **Last Updated**: March 6, 2026
-> **Current Phase**: Phase 11 — COMPLETE ✅ | Next: Phase 12 (Deployment & Launch)
+> **Last Updated**: March 7, 2026
+> **Current Phase**: Phase 12 — Deployment & Testing 🔄
 > **Overall Progress**: ████████████████████ 100%
 
 ---
@@ -189,9 +189,11 @@
 | # | Task | Status | Date | Notes |
 |---|------|--------|------|-------|
 | 12.1 | Production Firebase setup & security rules | ⬜ | — | |
-| 12.2 | Deploy to Vercel/Firebase Hosting | ⬜ | — | |
-| 12.3 | Pre-launch testing | ⬜ | — | |
-| 12.4 | Launch & onboarding | ⬜ | — | |
+| 12.2 | Deploy to Netlify | ✅ | Mar 7 | Live at luteclubfinder.netlify.app |
+| 12.3 | Fix Firebase env vars on Netlify + redeploy | ✅ | Mar 7 | All 7 VITE_FIREBASE_* vars set; build injects via CLI env export |
+| 12.4 | Bug report form (nav bar) | ✅ | Mar 7 | Modal with severity selector; saves to Firestore `bugReports`; emails eyob.menjigso@plu.edu via Formsubmit.co |
+| 12.5 | Pre-launch testing | 🔄 | — | |
+| 12.6 | Launch & onboarding | ⬜ | — | |
 
 ---
 
@@ -199,6 +201,8 @@
 
 | Date | Change |
 |------|--------|
+| Mar 7, 2026 | **Bug Report form added to nav.** New `BugReportModal` component with title, severity (low/medium/high), description, and auto-captured page path. Button (`🐛 Bug`) added to desktop nav and mobile drawer. On submit: writes to Firestore `bugReports` collection (fields: title, description, severity, page, reportedBy, userId, status, createdAt), and POSTs to Formsubmit.co to email `eyob.menjigso@plu.edu`. |
+| Mar 7, 2026 | **Netlify deployment + Firebase env var fix.** Deployed to `luteclubfinder.netlify.app`. Fixed `%0D` (CRLF carriage return) issue in Firebase config by stripping `\r` with `tr -d '\r\n'` before build. Resolved Netlify CLI re-build overwriting pre-built dist by using `--no-build` flag on `netlify deploy`. Added `.env` file locally (not committed) for local dev Firebase connectivity. |
 | Mar 6, 2026 | **Header & Footer polish tweaks.** Header background changed to solid black (`#000000`) using Tailwind arbitrary value `bg-[#000000]` (both main bar and mobile menu) to bypass Tailwind v4 CSS-variable resolution. Footer: background changed to solid black, copyright bar extracted outside the max-w container to span full width with no rounded corners, dashed gold divider removed, all footer link text set to white (hover → gold), brand description paragraph set to white. |
 | Mar 6, 2026 | **PLU Brand Theme — UI overhaul.** Applied Pacific Lutheran University's official color palette and typography across the entire app. **`index.html`**: added Inter Google Font (400–900 weights), updated page title to "LuteClubFinder — Pacific Lutheran University". **`index.css`**: added Tailwind v4 `@theme` block with PLU custom colors (`plu-gold` #FFCC33, `plu-gold-deep` #E6A800, `plu-gold-light` #FFF8D6, `plu-black` #231F20, `plu-gray` #E5E5E5, `plu-dark-gray`, `plu-green`); set Inter as default font family; updated focus-visible ring to PLU gold; added `.plu-divider` dashed gold line utility. **`Header.tsx`**: PLU black background with 2px gold bottom border, gold active/hover nav links on dark, white logo text with gold "Club" span, gold mobile menu accents. **`Footer.tsx`**: PLU black background, gold top accent border, gold column headings (uppercase/tracked), dashed gold divider before copyright, "Go Lutes!" tagline, hover links transition to gold. **`Button.tsx`**: primary → gold bg + PLU black bold text; secondary → PLU black bg + white; outline → gold border fills gold on hover; ghost → PLU gray hover. **`Badge.tsx`**: default → PLU gray; warning → gold tint. **`Card.tsx`**: hoverable cards gain gold border glow. **`HomePage.tsx`**: hero gradient uses `plu-gold-light`, accent text swapped to `plu-gold-deep`, stat cards get gold top-border accent, all section "View All" links use gold, Comfort Zone CTA redesigned as PLU black card with gold accents. **6 files modified**. |
 | Mar 5, 2026 | **Homepage: limit upcoming events to 3.** Reduced `useUpcomingEvents` limit on HomePage from 6 to 3 for a cleaner layout. |
