@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../ui/Button';
 import UserMenu from './UserMenu';
+import BugReportModal from './BugReportModal';
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -15,6 +16,7 @@ const navLinks = [
 export default function Header() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [bugModalOpen, setBugModalOpen] = useState(false);
   const { user, userData } = useAuth();
 
   return (
@@ -49,6 +51,13 @@ export default function Header() {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => setBugModalOpen(true)}
+              className="px-3 py-2 rounded-lg text-sm font-semibold text-gray-300 hover:text-plu-gold hover:bg-white/5 transition-colors flex items-center gap-1.5"
+              title="Report a bug"
+            >
+              🐛 Bug
+            </button>
             {(userData?.role === 'club_leader' || userData?.role === 'admin') && (
               <Link
                 to="/leader"
@@ -102,6 +111,8 @@ export default function Header() {
         </div>
       </div>
 
+      {bugModalOpen && <BugReportModal onClose={() => setBugModalOpen(false)} />}
+
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <nav aria-label="Mobile navigation" className="md:hidden border-t border-plu-gold/30 bg-[#000000]">
@@ -121,6 +132,12 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={() => { setBugModalOpen(true); setMobileMenuOpen(false); }}
+              className="w-full text-left px-3 py-2 rounded-lg text-base font-semibold text-gray-300 hover:text-plu-gold hover:bg-white/5 transition-colors flex items-center gap-2"
+            >
+              🐛 Report a Bug
+            </button>
             <div className="pt-3 border-t border-plu-gold/20">
               {(userData?.role === 'club_leader' || userData?.role === 'admin') && (
                 <Link
