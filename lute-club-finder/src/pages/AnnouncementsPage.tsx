@@ -93,7 +93,7 @@ export default function AnnouncementsPage() {
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           {/* Type filter pills */}
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {TYPE_PILLS.map((pill) => (
               <button
                 key={pill.value}
