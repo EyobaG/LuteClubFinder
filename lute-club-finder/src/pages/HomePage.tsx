@@ -77,17 +77,18 @@ export default function HomePage() {
           <h2 className="text-2xl font-extrabold text-plu-black mb-2">Browse by Category</h2>
           <p className="text-gray-600">Explore clubs organized by interest area</p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        {/* Mobile: horizontal scroll pills — Desktop: full grid */}
+        <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:overflow-visible lg:grid-cols-5">
           {CATEGORIES.map((cat) => {
             const colors = CATEGORY_COLORS[cat.value];
             return (
               <Link
                 key={cat.value}
                 to={`/discover?category=${cat.value}`}
-                className={`group flex flex-col items-center gap-2 rounded-xl border border-gray-200 p-5 transition-all hover:shadow-md hover:scale-[1.03] hover:border-plu-gold/50 ${colors}`}
+                className={`group shrink-0 flex flex-col items-center gap-2 rounded-xl border border-gray-200 p-4 transition-all hover:shadow-md hover:scale-[1.03] hover:border-plu-gold/50 sm:p-5 ${colors}`}
               >
-                <span className="text-3xl">{CATEGORY_ICONS[cat.value]}</span>
-                <span className="text-sm font-semibold">{cat.label}</span>
+                <span className="text-2xl sm:text-3xl">{CATEGORY_ICONS[cat.value]}</span>
+                <span className="text-xs sm:text-sm font-semibold whitespace-nowrap">{cat.label}</span>
               </Link>
             );
           })}
