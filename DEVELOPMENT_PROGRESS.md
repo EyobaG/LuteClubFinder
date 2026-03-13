@@ -1,7 +1,7 @@
 # Lute Club Finder - Development Progress
 
-> **Last Updated**: March 7, 2026
-> **Current Phase**: Phase 12 — Deployment & Testing 🔄
+> **Last Updated**: March 12, 2026
+> **Current Phase**: Phase 12 — Deployment & Post-Launch Polish 🔄
 > **Overall Progress**: ████████████████████ 100%
 
 ---
@@ -192,8 +192,9 @@
 | 12.2 | Deploy to Netlify | ✅ | Mar 7 | Live at luteclubfinder.netlify.app |
 | 12.3 | Fix Firebase env vars on Netlify + redeploy | ✅ | Mar 7 | All 7 VITE_FIREBASE_* vars set; build injects via CLI env export |
 | 12.4 | Bug report form (nav bar) | ✅ | Mar 7 | Modal with severity selector; saves to Firestore `bugReports`; emails eyob.menjigso@plu.edu via Formsubmit.co |
-| 12.5 | Pre-launch testing | 🔄 | — | |
-| 12.6 | Launch & onboarding | ⬜ | — | |
+| 12.5 | Post-launch mobile UX polish | ✅ | Mar 12 | Homepage carousels, footer reorganization, nav menu animation, category grid — see changelog |
+| 12.6 | Pre-launch testing | 🔄 | — | |
+| 12.7 | Launch & onboarding | ⬜ | — | |
 
 ---
 
@@ -201,6 +202,7 @@
 
 | Date | Change |
 |------|--------|
+| Mar 12, 2026 | **Mobile UX Polish session.** (1) **Page title** — changed em dash to hyphen: `LuteClubFinder - Pacific Lutheran University`. (2) **Favicon** — replaced wide Lutes mascot PNG with a new `favicon.svg`: dark shield with gold "L" in PLU colors, scales cleanly at all sizes. (3) **Firebase CRLF fix** — added `.trim()` to all 6 Firebase config values in `firebase.ts` to prevent `%0D` carriage-return in `authDomain` causing "Illegal URL for iframe" auth error. (4) **Netlify secrets scan** — added `SECRETS_SCAN_OMIT_KEYS` to `netlify.toml` for all 7 Firebase web config keys (public-by-design, not server secrets). (5) **Node 22 upgrade** — bumped `NODE_VERSION` in `netlify.toml` from 20 → 22 to satisfy Vite requirement (≥20.19 or ≥22.12). (6) **Homepage mobile carousels** — Featured Clubs, Latest Announcements, and Upcoming Events sections now use horizontal scroll-snap carousels on mobile (`overflow-x-auto snap-x snap-mandatory`, cards `w-[75vw]`); revert to standard grid at `sm:`. (7) **Browse by Category mobile** — switched from 2-col to 3-col grid on mobile (9 categories = 3 rows of 3 instead of 5 rows); reduced bottom padding gap (`pb-8` on mobile). (8) **Footer mobile reorganization** — brand block stays full-width; Explore + Quick Links placed side-by-side in a 2-col grid on mobile; Categories displayed as a 2-col wrap. Footer logo negative margin reduced on mobile (`-mt-8`) to prevent overflow above footer. Em dash in copyright replaced with hyphen. (9) **Mobile nav menu** — added slide-down animation (`max-h`/`opacity` transition, 300ms ease-in-out) on open/close; added emoji icons to all nav links (🏠 Home, 🔍 Discover, ✨ Quiz, 📅 Events, 📢 News, 🏆 My Clubs, ⚙️ Admin, 👤 Profile, 🐛 Report a Bug); active route now shows gold left-border (`border-l-2 border-plu-gold`) + gold background tint instead of just a color change. **Files modified**: `index.html`, `firebase.ts`, `netlify.toml`, `HomePage.tsx`, `Footer.tsx`, `Header.tsx`. **New file**: `public/favicon.svg`. |
 | Mar 7, 2026 | **Bug Report form added to nav.** New `BugReportModal` component with title, severity (low/medium/high), description, and auto-captured page path. Button (`🐛 Bug`) added to desktop nav and mobile drawer. On submit: writes to Firestore `bugReports` collection (fields: title, description, severity, page, reportedBy, userId, status, createdAt), and POSTs to Formsubmit.co to email `eyob.menjigso@plu.edu`. |
 | Mar 7, 2026 | **Netlify deployment + Firebase env var fix.** Deployed to `luteclubfinder.netlify.app`. Fixed `%0D` (CRLF carriage return) issue in Firebase config by stripping `\r` with `tr -d '\r\n'` before build. Resolved Netlify CLI re-build overwriting pre-built dist by using `--no-build` flag on `netlify deploy`. Added `.env` file locally (not committed) for local dev Firebase connectivity. |
 | Mar 6, 2026 | **Header & Footer polish tweaks.** Header background changed to solid black (`#000000`) using Tailwind arbitrary value `bg-[#000000]` (both main bar and mobile menu) to bypass Tailwind v4 CSS-variable resolution. Footer: background changed to solid black, copyright bar extracted outside the max-w container to span full width with no rounded corners, dashed gold divider removed, all footer link text set to white (hover → gold), brand description paragraph set to white. |

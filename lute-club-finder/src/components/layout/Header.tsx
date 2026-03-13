@@ -6,11 +6,11 @@ import UserMenu from './UserMenu';
 import BugReportModal from './BugReportModal';
 
 const navLinks = [
-  { to: '/', label: 'Home' },
-  { to: '/discover', label: 'Discover' },
-  { to: '/quiz', label: 'Quiz' },
-  { to: '/events', label: 'Events' },
-  { to: '/announcements', label: 'News' },
+  { to: '/', label: 'Home', icon: '🏠' },
+  { to: '/discover', label: 'Discover', icon: '🔍' },
+  { to: '/quiz', label: 'Quiz', icon: '✨' },
+  { to: '/events', label: 'Events', icon: '📅' },
+  { to: '/announcements', label: 'News', icon: '📢' },
 ];
 
 export default function Header() {
@@ -113,79 +113,91 @@ export default function Header() {
 
       {bugModalOpen && <BugReportModal onClose={() => setBugModalOpen(false)} />}
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <nav aria-label="Mobile navigation" className="md:hidden border-t border-plu-gold/30 bg-[#000000]">
-          <div className="px-4 py-3 space-y-1">
-            {navLinks.map((link) => (
+      {/* Mobile Menu — slide down with animation */}
+      <nav
+        aria-label="Mobile navigation"
+        className={`md:hidden border-t border-plu-gold/30 bg-[#000000] overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="px-4 py-3 space-y-1">
+          {/* Main nav links with icons + gold left border on active */}
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.to;
+            return (
               <Link
                 key={link.to}
                 to={link.to}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block px-3 py-2 rounded-lg text-base font-semibold transition-colors
-                  ${
-                    location.pathname === link.to
-                      ? 'bg-plu-gold/15 text-plu-gold'
-                      : 'text-gray-300 hover:text-plu-gold hover:bg-white/5'
-                  }`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-semibold transition-all border-l-2 ${
+                  isActive
+                    ? 'border-plu-gold bg-plu-gold/10 text-plu-gold'
+                    : 'border-transparent text-gray-300 hover:text-plu-gold hover:bg-white/5 hover:border-plu-gold/40'
+                }`}
               >
+                <span className="text-lg">{link.icon}</span>
                 {link.label}
               </Link>
-            ))}
-            <button
-              onClick={() => { setBugModalOpen(true); setMobileMenuOpen(false); }}
-              className="w-full text-left px-3 py-2 rounded-lg text-base font-semibold text-gray-300 hover:text-plu-gold hover:bg-white/5 transition-colors flex items-center gap-2"
-            >
-              🐛 Report a Bug
-            </button>
-            <div className="pt-3 border-t border-plu-gold/20">
-              {(userData?.role === 'club_leader' || userData?.role === 'admin') && (
-                <Link
-                  to="/leader"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-lg text-base font-semibold transition-colors
-                    ${
-                      location.pathname.startsWith('/leader')
-                        ? 'bg-plu-gold/15 text-plu-gold'
-                        : 'text-gray-300 hover:text-plu-gold hover:bg-white/5'
-                    }`}
-                >
-                  My Clubs
-                </Link>
-              )}
-              {userData?.role === 'admin' && (
-                <Link
-                  to="/admin"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-lg text-base font-semibold transition-colors
-                    ${
-                      location.pathname.startsWith('/admin')
-                        ? 'bg-plu-gold/15 text-plu-gold'
-                        : 'text-gray-300 hover:text-plu-gold hover:bg-white/5'
-                    }`}
-                >
-                  Admin
-                </Link>
-              )}
-              {user ? (
-                <Link
-                  to="/profile"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2 text-base font-semibold text-gray-300 hover:text-plu-gold"
-                >
-                  Profile
-                </Link>
-              ) : (
+            );
+          })}
+
+          <button
+            onClick={() => { setBugModalOpen(true); setMobileMenuOpen(false); }}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-plu-gold hover:bg-white/5 border-l-2 border-transparent hover:border-plu-gold/40 transition-all"
+          >
+            <span className="text-lg">🐛</span>
+            Report a Bug
+          </button>
+
+          {/* Divider + user section */}
+          <div className="pt-3 mt-1 border-t border-plu-gold/20 space-y-1">
+            {(userData?.role === 'club_leader' || userData?.role === 'admin') && (
+              <Link
+                to="/leader"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-semibold transition-all border-l-2 ${
+                  location.pathname.startsWith('/leader')
+                    ? 'border-plu-gold bg-plu-gold/10 text-plu-gold'
+                    : 'border-transparent text-gray-300 hover:text-plu-gold hover:bg-white/5 hover:border-plu-gold/40'
+                }`}
+              >
+                <span className="text-lg">🏆</span>
+                My Clubs
+              </Link>
+            )}
+            {userData?.role === 'admin' && (
+              <Link
+                to="/admin"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-semibold transition-all border-l-2 ${
+                  location.pathname.startsWith('/admin')
+                    ? 'border-plu-gold bg-plu-gold/10 text-plu-gold'
+                    : 'border-transparent text-gray-300 hover:text-plu-gold hover:bg-white/5 hover:border-plu-gold/40'
+                }`}
+              >
+                <span className="text-lg">⚙️</span>
+                Admin
+              </Link>
+            )}
+            {user ? (
+              <Link
+                to="/profile"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-plu-gold hover:bg-white/5 border-l-2 border-transparent hover:border-plu-gold/40 transition-all"
+              >
+                <span className="text-lg">👤</span>
+                Profile
+              </Link>
+            ) : (
+              <div className="px-2 pt-1 pb-2">
                 <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full mt-2" size="sm">
-                    Sign In
-                  </Button>
+                  <Button className="w-full" size="sm">Sign In</Button>
                 </Link>
-              )}
-            </div>
+              </div>
+            )}
           </div>
-        </nav>
-      )}
+        </div>
+      </nav>
     </header>
   );
 }
