@@ -103,9 +103,11 @@ export default function HomePage() {
           </Link>
         </div>
         {clubs && clubs.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-4 -mx-4 px-4 sm:mx-0 sm:px-0">
             {clubs.map((club) => (
-              <ClubCard key={club.id} club={club} hideSave />
+              <div key={club.id} className="snap-start shrink-0 w-[75vw] sm:w-auto">
+                <ClubCard club={club} hideSave />
+              </div>
             ))}
           </div>
         ) : (
@@ -122,9 +124,11 @@ export default function HomePage() {
               View All →
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-3 -mx-4 px-4 sm:mx-0 sm:px-0">
             {announcements.map((a) => (
-              <AnnouncementCard key={a.id} announcement={a} />
+              <div key={a.id} className="snap-start shrink-0 w-[75vw] sm:w-auto">
+                <AnnouncementCard announcement={a} />
+              </div>
             ))}
           </div>
         </section>
@@ -139,9 +143,11 @@ export default function HomePage() {
           </Link>
         </div>
         {upcomingEvents && upcomingEvents.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-3 -mx-4 px-4 sm:mx-0 sm:px-0">
             {upcomingEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
+              <div key={event.id} className="snap-start shrink-0 w-[75vw] sm:w-auto">
+                <EventCard event={event} />
+              </div>
             ))}
           </div>
         ) : (
