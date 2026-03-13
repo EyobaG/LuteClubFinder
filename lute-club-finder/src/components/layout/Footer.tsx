@@ -74,7 +74,7 @@ export default function Footer() {
       {/* Full-width gold copyright bar */}
       <div className="bg-plu-gold w-full py-4 px-4 text-center">
         <p className="text-sm font-semibold text-plu-black">
-          &copy; {new Date().getFullYear()} Lute Club Finder &mdash; Built with ❤️ by Job Menjigso (Eyob) for Pacific Lutheran University
+          &copy; {new Date().getFullYear()} Lute Club Finder - Built with ❤️ by Job Menjigso (Eyob) for Pacific Lutheran University
         </p>
       </div>
     </footer>
