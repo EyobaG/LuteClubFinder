@@ -133,12 +133,15 @@ export default function ProfilePage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center">
+        <button
+          onClick={() => navigate('/saved')}
+          className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center hover:border-amber-300 hover:shadow-md transition-all"
+        >
           <p className="text-3xl font-bold text-amber-600">
             {userData.savedClubs?.length || 0}
           </p>
-          <p className="text-sm text-gray-500 mt-1">Saved Clubs</p>
-        </div>
+          <p className="text-sm text-gray-500 mt-1">Saved Clubs →</p>
+        </button>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center">
           <p className="text-3xl font-bold text-amber-600">
@@ -149,12 +152,15 @@ export default function ProfilePage() {
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center">
+        <button
+          onClick={() => navigate('/leader')}
+          className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center hover:border-amber-300 hover:shadow-md transition-all"
+        >
           <p className="text-3xl font-bold text-amber-600">
             {userData.clubLeaderOf?.length || 0}
           </p>
-          <p className="text-sm text-gray-500 mt-1">Clubs Led</p>
-        </div>
+          <p className="text-sm text-gray-500 mt-1">Clubs Led →</p>
+        </button>
       </div>
 
       {/* Quiz CTA */}
