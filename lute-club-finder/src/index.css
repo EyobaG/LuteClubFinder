@@ -27,12 +27,14 @@
 /* ── Base styles ───────────────────────────────────────────────────── */
 html {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* ── PLU dashed divider motif ──────────────────────────────────────── */
