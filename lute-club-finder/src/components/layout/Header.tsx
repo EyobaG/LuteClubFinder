@@ -23,6 +23,8 @@ export default function Header() {
     <header className="bg-[#000000] sticky top-0 z-50 border-b-2 border-plu-gold">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          {/* Spacer — balances hamburger so logo centers on mobile */}
+          <div className="md:hidden w-10 shrink-0" />
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img src="/lute-club-finder.png" alt="LuteClubFinder logo" className="h-28 w-[199px] sm:w-auto object-contain -mr-14 shrink-0" />
