@@ -9,7 +9,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Brand — full width, untouched */}
-        <div className="flex flex-col items-center justify-center text-center mb-10" style={{marginTop: '-6rem'}}>
+        <div className="flex flex-col items-center justify-center text-center mb-10 -mt-8 sm:-mt-24">
           <img src="/lute-club-finder.png" alt="LuteClubFinder logo" className="h-36 w-auto object-contain mb-0" style={{marginTop: 0}} />
           <span className="text-3xl font-extrabold text-white mb-2" style={{marginTop: '-1.25rem'}}>
             Lute<span className="text-plu-gold">Club</span>Finder
