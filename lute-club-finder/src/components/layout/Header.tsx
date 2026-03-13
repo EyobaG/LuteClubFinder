@@ -24,8 +24,8 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center -ml-4">
-            <img src="/lute-club-finder.png" alt="LuteClubFinder logo" className="h-28 w-[199px] sm:w-auto object-contain -mr-14 shrink-0" />
+          <Link to="/" className="flex items-center -ml-6">
+            <img src="/lute-club-finder.png" alt="LuteClubFinder logo" width="680" height="382" className="h-28 w-[199px] sm:w-auto object-contain -mr-14 shrink-0" />
             <span className="text-xl font-extrabold text-white tracking-tight">
               Lute<span className="text-plu-gold">Club</span>Finder
             </span>
