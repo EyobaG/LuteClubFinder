@@ -27,7 +27,7 @@ export default function Footer() {
         <div className="sm:hidden">
           {/* Brand — centered */}
           <div className="flex flex-col items-center justify-center text-center mb-10 -mt-8">
-            <Link to="/" className="flex flex-col items-center">
+            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex flex-col items-center">
               <img src="/lute-club-finder.png" alt="LuteClubFinder logo" className="h-36 w-auto object-contain mb-0" style={{marginTop: 0}} />
               <span className="text-3xl font-extrabold text-white mb-2" style={{marginTop: '-1.25rem'}}>
                 Lute<span className="text-plu-gold">Club</span>Finder
@@ -89,7 +89,7 @@ export default function Footer() {
         <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand — col-span-2, original style */}
           <div className="col-span-1 sm:col-span-2 flex flex-col items-center justify-center text-center" style={{marginTop: '-6rem'}}>
-            <Link to="/" className="flex flex-col items-center">
+            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex flex-col items-center">
               <img src="/lute-club-finder.png" alt="LuteClubFinder logo" className="h-36 w-auto object-contain mb-0" style={{marginTop: 0}} />
               <span className="text-3xl font-extrabold text-white mb-2" style={{marginTop: '-1.25rem'}}>
                 Lute<span className="text-plu-gold">Club</span>Finder
